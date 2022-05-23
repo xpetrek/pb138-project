@@ -11,6 +11,7 @@ type Props = {
 };
 
 const Layout: FC<Props> = ({ children }) => {
+	const user = undefined;
 	const t = useTranslation();
 	return (
 		<>
@@ -20,21 +21,21 @@ const Layout: FC<Props> = ({ children }) => {
 						<Button color="secondary" component={Link} to="/">
 							Home
 						</Button>
-						<Box sx={{ flexGrow: 1 }} />
-						<Button color="secondary" component={Link} to="/login">
-							Login
+						<Button color="secondary" component={Link} to="/addRoom">
+							AddRoom
 						</Button>
-						<LanguageSwitch />
-						{/* {!user ? (
-							<Button color="secondary" component={Link} to="/about">
+						<Button color="secondary" component={Link} to="/addReservation">
+							Reservations
+						</Button>
+						<Box sx={{ flexGrow: 1 }} />
+						{!user ? (
+							<Button color="secondary" component={Link} to="/login">
 								Login
 							</Button>
 						) : (
-							<Button color="secondary" onClick={signOut}>
-								Logout
-							</Button>
-						)
-						} */}
+							<Button color="secondary">Logout</Button>
+						)}
+						<LanguageSwitch />
 					</Toolbar>
 				</Container>
 			</AppBar>

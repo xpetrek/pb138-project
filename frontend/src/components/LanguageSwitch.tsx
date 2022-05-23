@@ -1,4 +1,4 @@
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Switch } from '@mui/material';
 import Flag from 'react-flagkit';
 
 import { useLanguage, useTranslation } from '../hooks/useTranslation';
@@ -37,9 +37,10 @@ const LanguageSwitch = () => {
 			<FlagButton
 				onClick={() => setLanguage('sk')}
 				active={language === 'sk'}
-				title={t('cs')}
+				title={t('sk')}
 				country="SK"
 			/>
+			<Switch />
 		</Box>
 	);
 };

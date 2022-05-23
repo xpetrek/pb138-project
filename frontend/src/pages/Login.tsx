@@ -7,11 +7,11 @@ const Login = () => {
 	const [password, setPassword] = useState('');
 
 	const handleLogin = () => {
-		console.log("login")
+		console.log('login');
 	};
 
 	const handleLogout = () => {
-		console.log("logout")
+		console.log('logout');
 	};
 
 	return (
@@ -28,16 +28,13 @@ const Login = () => {
 				label="Password"
 				name="password"
 				value={password}
-				multiline
+				required
 				fullWidth
 				maxRows={5}
 				onChange={e => setPassword(e.target.value)}
 			/>
 			<Button variant="contained" onClick={handleLogin}>
-				Submit
-			</Button>
-			<Button variant="contained" onClick={handleLogout}>
-				Logout
+				Login
 			</Button>
 		</>
 	);

@@ -1,7 +1,8 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import CustomRouter from './components/CustomRouter';
 import { LanguageProvider } from './hooks/useTranslation';
 import theme from './utils/theme';
 
@@ -11,7 +12,7 @@ const App = () => (
 			<BrowserRouter>
 				<CssBaseline />
 				<Layout>
-					<Routes />
+					<CustomRouter />
 				</Layout>
 			</BrowserRouter>
 		</ThemeProvider>
