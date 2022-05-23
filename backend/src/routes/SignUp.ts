@@ -1,5 +1,4 @@
 import express from 'express';
-import jsonwebtoken from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 
@@ -9,9 +8,13 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
+    console.log(name, email, password);
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    console.log(passwordHash);
+
 
     const createdUser = await prisma.user.create({
         data: {
@@ -21,13 +24,14 @@ router.post("/signup", async (req, res) => {
         }
     });
 
+    console.log(createdUser);
 
     if (createdUser === null) {
         return res
           .status(401)
           .json({ message: "The sign-up has failed!" });
     }
-    return res.status(200);
+    res.status(200).send("Successfully created an user!");
 });
 
 export default router;
