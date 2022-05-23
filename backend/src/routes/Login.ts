@@ -10,12 +10,12 @@ const router = express.Router();
 const JWT_SECRET = "sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws9&Bh";
 
 router.post("/login", async (req, res) => {
-  const { userName, password } = req.body;
+  const { email, password } = req.body;
 
   const user = await prisma.user.findFirst({
     where: {
-      username: {
-        equals: userName
+      email: {
+        equals: email
       }
     }
   });
@@ -23,7 +23,7 @@ router.post("/login", async (req, res) => {
   if (user === null) {
     return res
       .status(401)
-      .json({ message: "The username your provided is invalid" });
+      .json({ message: "The email your provided is invalid" });
   }
 
   const passwordMatch = await bcrypt.compare(password, user.passwordHash);
@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
   }
 
   return res.json({
-    token: jsonwebtoken.sign({ user: user.username }, JWT_SECRET),
+    token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
   });
 });
 
