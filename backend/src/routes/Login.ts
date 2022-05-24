@@ -12,28 +12,35 @@ const JWT_SECRET = "sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email: email,
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      }
+    });
+
+    if (user === null) {
+      return res
+        .status(401)
+        .json({ message: "The email your provided is invalid" });
     }
-  });
 
-  if (user === null) {
+    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatch) {
+      return res
+        .status(401)
+        .json({ message: "The password your provided is invalid" });
+    }
+
+    return res.json({
+      token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
+      id: user.id
+    });
+  } catch (e) {
     return res
-      .status(401)
-      .json({ message: "The email your provided is invalid" });
+      .status(500)
+      .json({ message: e.message });
   }
-
-  const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-  if (!passwordMatch) {
-    return res
-      .status(401)
-      .json({ message: "The password your provided is invalid" });
-  }
-
-  return res.json({
-    token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
-  });
 });
 
 export default router;

@@ -11,102 +11,127 @@ router.get("/rooms", async (req, res) => {
     const to = req.query.to as string;
     const location = req.query.location as string;
 
-    let rooms = await prisma.room.findMany({
-        include: {
-            reservations: {
-                select: {
-                    from: true,
-                    to: true,
+    try {
+        let rooms = await prisma.room.findMany({
+            include: {
+                reservations: {
+                    select: {
+                        from: true,
+                        to: true,
+                    }
                 }
             }
+        });
+        if (ownerId) {
+            rooms = rooms.filter(room => room.ownerId === parseInt(ownerId));
         }
-    });
-
-    if (ownerId) {
-        rooms = rooms.filter(room => room.ownerId === parseInt(ownerId));
+        if (from) {
+            const fromDate = new Date(from);
+            rooms = rooms.filter(room => room.reservations.find(reservation => reservation.from >= fromDate));
+        }
+        if (to) {
+            const toDate = new Date(to);
+            rooms = rooms.filter(room => room.reservations.find(reservation => reservation.to <= toDate));
+        }
+        if (location) {
+            rooms = rooms.filter(room => room.location === location);
+        }
+        res.status(200).send(rooms);
+    } catch (e) {
+        return res
+            .status(500)
+            .json({ message: e.message });
     }
-    if (from) {
-        const fromDate = new Date(from);
-        rooms = rooms.filter(room => room.reservations.find(reservation => reservation.from >= fromDate));
-    }
-    if (to) {
-        const toDate = new Date(to);
-        rooms = rooms.filter(room => room.reservations.find(reservation => reservation.to <= toDate));
-    }
-    if (location) {
-        rooms = rooms.filter(room => room.location === location);
-    }    
-    res.status(200).send(rooms);
 });
 
 router.get("/rooms/:id", async (req, res) => {
     const id = req.params.id as string;
-    const room = await prisma.room.findUnique({
-        where: {
-            id: parseInt(id),
-        }
-    })
-    res.status(200).send(room);
+
+    try {
+        const room = await prisma.room.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        })
+        res.status(200).send(room);
+    } catch (e) {
+        return res
+            .status(500)
+            .json({ message: e.message });
+    }
+
 });
 
 router.post("/rooms", async (req, res) => {
     const { name, description, location, pricePerDay, ownerId, pictures } = req.body;
 
-    const createdRoom = await prisma.room.create({
-        data: {
-            name: name,
-            description: description,
-            location: location,
-            pricePerDay: pricePerDay,
-            ownerId: ownerId,
-            pictures: {
-                create: pictures
+    try {
+        const createdRoom = await prisma.room.create({
+            data: {
+                name: name,
+                description: description,
+                location: location,
+                pricePerDay: pricePerDay,
+                ownerId: ownerId,
+                pictures: {
+                    create: pictures
+                }
             }
+        });
+        if (createdRoom === null) {
+            return res
+                .status(400)
+                .json({ message: "The creation of a room has failed" });
         }
-    });
-
-    if (createdRoom === null) {
+        res.status(201).json({ id: createdRoom.id });
+    } catch (e) {
         return res
-          .status(400)
-          .json({ message: "The creation of a room has failed!" });
+            .status(500)
+            .json({ message: e.message });
     }
-    res.status(201).json({ id: createdRoom.id });
 });
 
 
 router.delete("/rooms/:id", async (req, res) => {
     const id = parseInt(req.params.id as string);
 
-    const deletePictures = prisma.picture.deleteMany({
-        where: {
-            roomId: id
-        }
-    });
-
-    const deleteRoom = prisma.room.delete({
-        where: {
-            id: id,
-        }
-    });
-
-    await prisma.$transaction([deletePictures, deleteRoom])
-
-
-    res.status(200).json({ message: "Successfully deleted a room!" });
+    try {
+        const deletePictures = prisma.picture.deleteMany({
+            where: {
+                roomId: id
+            }
+        });
+        const deleteRoom = prisma.room.delete({
+            where: {
+                id: id,
+            }
+        });
+        await prisma.$transaction([deletePictures, deleteRoom])
+        res.status(200).json({ message: "Successfully deleted a room" });
+    } catch (e) {
+        return res
+            .status(500)
+            .json({ message: e.message });
+    }
 });
 
 router.put("/rooms/:id", async (req, res) => {
     const id = parseInt(req.params.id as string);
 
-    const updatedRoom = await prisma.room.update({
-        where: {
-            id: id,
-        },
-        data: req.body
-    })
+    try {
+        const updatedRoom = await prisma.room.update({
+            where: {
+                id: id,
+            },
+            data: req.body
+        })
+        res.status(201).json({ id: updatedRoom.id });
+    } catch (e) {
+        return res
+            .status(500)
+            .json({ message: e.message });
+    }
 
-
-    res.status(201).json({ id: updatedRoom.id });
 });
 
 export default router;
