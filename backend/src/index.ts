@@ -1,6 +1,8 @@
 import express from 'express';
 import loginRoute from './routes/Login';
-import signupRoute from './routes/SignUp'
+import signupRoute from './routes/SignUp';
+import usersRoute from './routes/Users';
+import roomsRoute from './routes/Rooms';
 
 const app = express();
 const PORT = 3000;
@@ -8,10 +10,8 @@ const PORT = 3000;
 app.use(express.json());
 app.use(loginRoute);
 app.use(signupRoute);
-
-app.get('/', (req, res) => {
-  res.send('Hello from A!')
-})
+app.use(usersRoute);
+app.use(roomsRoute);
 
 app.listen(PORT, () => {
   console.log('Backend server is running');

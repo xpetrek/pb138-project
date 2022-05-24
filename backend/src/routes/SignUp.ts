@@ -8,13 +8,9 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
-    console.log(name, email, password);
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
-
-    console.log(passwordHash);
-
 
     const createdUser = await prisma.user.create({
         data: {
@@ -24,14 +20,12 @@ router.post("/signup", async (req, res) => {
         }
     });
 
-    console.log(createdUser);
-
     if (createdUser === null) {
         return res
-          .status(401)
+          .status(400)
           .json({ message: "The sign-up has failed!" });
     }
-    res.status(200).send("Successfully created an user!");
+    res.status(201).json({ id: createdUser.id });
 });
 
 export default router;

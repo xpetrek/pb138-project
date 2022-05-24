@@ -12,11 +12,9 @@ const JWT_SECRET = "sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
-      email: {
-        equals: email
-      }
+      email: email,
     }
   });
 
