@@ -106,7 +106,7 @@ router.put("/rooms/:id", async (req, res) => {
     })
 
 
-    res.status(200).json({ id: updatedRoom.id });
+    res.status(201).json({ id: updatedRoom.id });
 });
 
 export default router;
