@@ -57,12 +57,31 @@ router.get("/reservations/:id", async (req, res) => {
 
 router.post("/reservations", async (req, res) => {
     const { from, to, roomId, userId } = req.body;
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
 
     try {
+        const conflictingReservations = await prisma.reservation.count({
+            where: {
+                from: {
+                    lte: toDate,
+                },
+                to: {
+                    gte: fromDate,
+                },
+            }
+        })
+
+        if (conflictingReservations) {
+            return res
+                .status(400)
+                .json({ message: "There is already a reservation in the chosen time frame" })
+        }
+
         const createdReservation = await prisma.reservation.create({
             data: {
-                from: new Date(from),
-                to: new Date(to),
+                from: fromDate,
+                to: toDate,
                 room: {
                     connect: {
                         id: roomId,
