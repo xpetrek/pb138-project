@@ -51,6 +51,9 @@ router.get("/rooms/:id", async (req, res) => {
         const room = await prisma.room.findUnique({
             where: {
                 id: parseInt(id),
+            },
+            include: {
+                pictures: true,
             }
         })
         res.status(200).send(room);
