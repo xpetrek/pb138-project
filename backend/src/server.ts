@@ -11,14 +11,14 @@ import reservationsRoute from './routes/Reservations';
 const app = express();
 
 const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Rooms API',
-            version: '1.0.0',
-        }
-    },
-    apis: ['./src/routes/**.ts'],
+	swaggerDefinition: {
+		openapi: '3.0.0',
+		info: {
+			title: 'Rooms API',
+			version: '1.0.0'
+		}
+	},
+	apis: ['./src/routes/**.ts']
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

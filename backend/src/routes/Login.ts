@@ -1,16 +1,16 @@
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt'
-
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-const JWT_SECRET = "sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws9&Bh";
+const JWT_SECRET =
+	'sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws9&Bh';
 
 /**
- * @swagger 
+ * @swagger
  * /login:
  *    post:
  *      summary: Logs the user in.
@@ -49,40 +49,36 @@ const JWT_SECRET = "sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws
  *        500:
  *          description: Server error
  */
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+router.post('/login', async (req, res) => {
+	const { email, password } = req.body;
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      }
-    });
+	try {
+		const user = await prisma.user.findUnique({
+			where: {
+				email
+			}
+		});
 
-    if (user === null) {
-      return res
-        .status(401)
-        .json({ message: `The email (${email}) your provided is already tied to an account` });
-    }
+		if (user === null) {
+			return res.status(401).json({
+				message: `The email (${email}) your provided is already tied to an account`
+			});
+		}
 
-    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!passwordMatch) {
-      return res
-        .status(401)
-        .json({ message: `The password (${password}) your provided is invalid` });
-    }
+		const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+		if (!passwordMatch) {
+			return res.status(401).json({
+				message: `The password (${password}) your provided is invalid`
+			});
+		}
 
-    return res
-      .status(200)
-      .json({
-        token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
-        userId: user.id
-      });
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: e.message });
-  }
+		return res.status(200).json({
+			token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
+			userId: user.id
+		});
+	} catch (e) {
+		return res.status(500).json({ message: e.message });
+	}
 });
 
 export default router;

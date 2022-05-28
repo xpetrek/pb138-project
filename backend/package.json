@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint \"./src/**/*.{ts,tsx}\" && prettier \"./src/**/*.{ts,tsx}\" --check",
+    "flint": "eslint \"./src/**/*.{ts,tsx}\" --fix && prettier \"./src/**/*.{ts,tsx}\" --write"
   },
+  "eslintConfig": {
+		"extends": "haaxor1689s-config"
+	},
+	"prettier": "prettier-config-haaxor1689s-config",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xpetrek/pb138-project.git"
