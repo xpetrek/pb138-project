@@ -1,4 +1,5 @@
 import express from 'express';
+import { body, validationResult } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
@@ -43,40 +44,52 @@ const router = express.Router();
  *                    type: integer
  *                    example: 1
  *        400:
- *          description: Sign-up failed, an account with the given email already exists
+ *          description: Validation error
  *        500:
  *          description: Server error
  */
-router.post('/signup', async (req, res) => {
-	const { name, email, password } = req.body;
-
-	try {
-		const emailExists = await prisma.user.count({
-			where: {
-				email
-			}
-		});
-		console.log(emailExists);
-		if (emailExists) {
-			return res.status(400).json({
-				message: `Sign-up has failed, the account with the given email (${email}) already exists`
-			});
+router.post(
+	'/signup',
+	body('name').notEmpty(),
+	body('email').isEmail().notEmpty(),
+	body('password', 'password length must be at least 8')
+		.isLength({ min: 8 })
+		.notEmpty(),
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
 		}
+		const { name, email, password } = req.body;
 
-		const saltRounds = 10;
-		const passwordHash = await bcrypt.hash(password, saltRounds);
-
-		const createdUser = await prisma.user.create({
-			data: {
-				name,
-				email,
-				passwordHash
+		try {
+			const emailExists = await prisma.user.count({
+				where: {
+					email
+				}
+			});
+			console.log(emailExists);
+			if (emailExists) {
+				return res.status(400).json({
+					message: `Sign-up has failed, the account with the given email (${email}) already exists`
+				});
 			}
-		});
-		res.status(201).json({ userId: createdUser.id });
-	} catch (e) {
-		return res.status(500).json({ message: e.message });
+
+			const saltRounds = 10;
+			const passwordHash = await bcrypt.hash(password, saltRounds);
+
+			const createdUser = await prisma.user.create({
+				data: {
+					name,
+					email,
+					passwordHash
+				}
+			});
+			res.status(201).json({ userId: createdUser.id });
+		} catch (e) {
+			return res.status(500).json({ message: e.message });
+		}
 	}
-});
+);
 
 export default router;

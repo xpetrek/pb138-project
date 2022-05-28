@@ -1,4 +1,5 @@
 import express from 'express';
+import { body, query, validationResult } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -31,45 +32,50 @@ const router = express.Router();
  *      responses:
  *        200:
  *          description: Returns Array of Reservation objects as JSON
- *        404:
- *          description: Missing room ID
+ *        400:
+ *          description: Validation error
  *        500:
  *          description: Server error
  */
-router.get('/reservations', async (req, res) => {
-	const roomId = req.query.roomId as string;
+router.get(
+	'/reservations',
+	query('roomId', 'roomId is required').notEmpty(),
+	query('from', 'from is not a Date').isDate(),
+	query('to', 'to is not a Date').isDate(),
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const roomId = req.query.roomId as string;
+		const from = req.query.from as string;
+		const to = req.query.to as string;
 
-	if (!roomId) {
-		return res.status(404).json({ message: 'Missing roomId' });
-	}
+		try {
+			let reservations = await prisma.reservation.findMany({
+				where: {
+					roomId: parseInt(roomId)
+				}
+			});
 
-	const from = req.query.from as string;
-	const to = req.query.to as string;
-
-	try {
-		let reservations = await prisma.reservation.findMany({
-			where: {
-				roomId: parseInt(roomId)
+			if (from) {
+				const fromDate = new Date(from);
+				reservations = reservations.filter(
+					reservation => reservation.from >= fromDate
+				);
 			}
-		});
-
-		if (from) {
-			const fromDate = new Date(from);
-			reservations = reservations.filter(
-				reservation => reservation.from >= fromDate
-			);
+			if (to) {
+				const toDate = new Date(to);
+				reservations = reservations.filter(
+					reservation => reservation.to <= toDate
+				);
+			}
+			res.status(200).send(reservations);
+		} catch (e) {
+			return res.status(500).json({ message: e.message });
 		}
-		if (to) {
-			const toDate = new Date(to);
-			reservations = reservations.filter(
-				reservation => reservation.to <= toDate
-			);
-		}
-		res.status(200).send(reservations);
-	} catch (e) {
-		return res.status(500).json({ message: e.message });
 	}
-});
+);
 
 /**
  * @swagger
@@ -162,54 +168,89 @@ router.get('/reservations/:id', async (req, res) => {
  *                    type: integer
  *                    example: 1
  *        400:
- *          description: There is a conflicting reservation
+ *          description: Validation error or coflicting reservation
+ *        404:
+ *          description: Specified room or user does not exist
  *        500:
  *          description: Server error
  */
-router.post('/reservations', async (req, res) => {
-	const { from, to, roomId, userId } = req.body;
-	const fromDate = new Date(from);
-	const toDate = new Date(to);
-
-	try {
-		const conflictingReservations = await prisma.reservation.count({
-			where: {
-				from: {
-					lte: toDate
-				},
-				to: {
-					gte: fromDate
-				}
-			}
-		});
-
-		if (conflictingReservations) {
-			return res.status(400).json({
-				message: 'There is already a reservation in the chosen time frame'
-			});
+router.post(
+	'/reservations',
+	body('from').isDate().notEmpty(),
+	body('to').isDate().notEmpty(),
+	body('roomId').notEmpty(),
+	body('userId').notEmpty(),
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
 		}
+		const { from, to, roomId, userId } = req.body;
+		const fromDate = new Date(from);
+		const toDate = new Date(to);
 
-		const createdReservation = await prisma.reservation.create({
-			data: {
-				from: fromDate,
-				to: toDate,
-				room: {
-					connect: {
-						id: roomId
-					}
-				},
-				user: {
-					connect: {
-						id: userId
+		try {
+			const roomExists = await prisma.room.count({
+				where: {
+					id: roomId
+				}
+			});
+			if (!roomExists) {
+				return res
+					.status(404)
+					.json({ message: `The room with id (${roomId}) does not exist` });
+			}
+
+			const userExists = await prisma.user.count({
+				where: {
+					id: userId
+				}
+			});
+			if (!userExists) {
+				return res
+					.status(404)
+					.json({ message: `The user with id (${userId}) does not exist` });
+			}
+
+			const conflictingReservations = await prisma.reservation.count({
+				where: {
+					from: {
+						lte: toDate
+					},
+					to: {
+						gte: fromDate
 					}
 				}
+			});
+
+			if (conflictingReservations) {
+				return res.status(400).json({
+					message: 'There is already a reservation in the chosen time frame'
+				});
 			}
-		});
-		res.status(201).json({ reservationId: createdReservation.id });
-	} catch (e) {
-		return res.status(500).json({ message: e.message });
+
+			const createdReservation = await prisma.reservation.create({
+				data: {
+					from: fromDate,
+					to: toDate,
+					room: {
+						connect: {
+							id: roomId
+						}
+					},
+					user: {
+						connect: {
+							id: userId
+						}
+					}
+				}
+			});
+			res.status(201).json({ reservationId: createdReservation.id });
+		} catch (e) {
+			return res.status(500).json({ message: e.message });
+		}
 	}
-});
+);
 
 /**
  * @swagger

@@ -1,4 +1,5 @@
 import express from 'express';
+import { body, query, validationResult } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -35,45 +36,56 @@ const router = express.Router();
  *      responses:
  *        200:
  *          description: Returns Array of Room objects as JSON
+ *        400:
+ *          description: Validation error
  *        500:
  *          description: Server error
  */
-router.get('/rooms', async (req, res) => {
-	const ownerId = req.query.ownerId as string;
-	const from = req.query.from as string;
-	const to = req.query.to as string;
-	const location = req.query.location as string;
+router.get(
+	'/rooms',
+	query('from', 'from is not a Date').isDate(),
+	query('to', 'to is not a Date').isDate(),
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const ownerId = req.query.ownerId as string;
+		const from = req.query.from as string;
+		const to = req.query.to as string;
+		const location = req.query.location as string;
 
-	try {
-		let rooms = await prisma.room.findMany({
-			include: {
-				reservations: true,
-				pictures: true
+		try {
+			let rooms = await prisma.room.findMany({
+				include: {
+					reservations: true,
+					pictures: true
+				}
+			});
+			if (ownerId) {
+				rooms = rooms.filter(room => room.ownerId === parseInt(ownerId));
 			}
-		});
-		if (ownerId) {
-			rooms = rooms.filter(room => room.ownerId === parseInt(ownerId));
+			if (from) {
+				const fromDate = new Date(from);
+				rooms = rooms.filter(room =>
+					room.reservations.find(reservation => reservation.from >= fromDate)
+				);
+			}
+			if (to) {
+				const toDate = new Date(to);
+				rooms = rooms.filter(room =>
+					room.reservations.find(reservation => reservation.to <= toDate)
+				);
+			}
+			if (location) {
+				rooms = rooms.filter(room => room.location === location);
+			}
+			res.status(200).send(rooms);
+		} catch (e) {
+			return res.status(500).json({ message: e.message });
 		}
-		if (from) {
-			const fromDate = new Date(from);
-			rooms = rooms.filter(room =>
-				room.reservations.find(reservation => reservation.from >= fromDate)
-			);
-		}
-		if (to) {
-			const toDate = new Date(to);
-			rooms = rooms.filter(room =>
-				room.reservations.find(reservation => reservation.to <= toDate)
-			);
-		}
-		if (location) {
-			rooms = rooms.filter(room => room.location === location);
-		}
-		res.status(200).send(rooms);
-	} catch (e) {
-		return res.status(500).json({ message: e.message });
 	}
-});
+);
 
 /**
  * @swagger
@@ -187,31 +199,45 @@ router.get('/rooms/:id', async (req, res) => {
  *                    description: An ID of the created room.
  *                    type: integer
  *                    example: 1
+ *        400:
+ *          description: Validation error
  *        500:
  *          description: Server error
  */
-router.post('/rooms', async (req, res) => {
-	const { name, description, location, pricePerDay, ownerId, pictures } =
-		req.body;
+router.post(
+	'/rooms',
+	body('name').notEmpty(),
+	body('description').notEmpty(),
+	body('location').notEmpty(),
+	body('pricePerDay').notEmpty(),
+	body('ownerId').notEmpty(),
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+		const { name, description, location, pricePerDay, ownerId, pictures } =
+			req.body;
 
-	try {
-		const createdRoom = await prisma.room.create({
-			data: {
-				name,
-				description,
-				location,
-				pricePerDay,
-				ownerId,
-				pictures: {
-					create: pictures
+		try {
+			const createdRoom = await prisma.room.create({
+				data: {
+					name,
+					description,
+					location,
+					pricePerDay,
+					ownerId,
+					pictures: {
+						create: pictures
+					}
 				}
-			}
-		});
-		res.status(201).json({ roomId: createdRoom.id });
-	} catch (e) {
-		return res.status(500).json({ message: e.message });
+			});
+			res.status(201).json({ roomId: createdRoom.id });
+		} catch (e) {
+			return res.status(500).json({ message: e.message });
+		}
 	}
-});
+);
 
 /**
  * @swagger
