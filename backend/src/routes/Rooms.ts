@@ -92,6 +92,8 @@ router.get('/rooms', async (req, res) => {
  *      responses:
  *        200:
  *          description: Returns Room object as JSON
+ *        404:
+ *          description: The room with given id does not exist
  *        500:
  *          description: Server error
  */
@@ -99,6 +101,17 @@ router.get('/rooms/:id', async (req, res) => {
 	const id = req.params.id as string;
 
 	try {
+		const roomExists = await prisma.room.count({
+			where: {
+				id: parseInt(id)
+			}
+		});
+		if (!roomExists) {
+			return res
+				.status(404)
+				.json({ message: `The room with id (${id}) does not exist` });
+		}
+
 		const room = await prisma.room.findUnique({
 			where: {
 				id: parseInt(id)
