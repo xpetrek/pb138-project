@@ -4,7 +4,7 @@
   "description": "Backend for Rooms system",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "sudo docker-compose -f ./postgres_docker/docker-compose.yml up -d  && nodemon src/index.ts",
     "test": "jest",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" && prettier \"./src/**/*.{ts,tsx}\" --check",
     "flint": "eslint \"./src/**/*.{ts,tsx}\" --fix && prettier \"./src/**/*.{ts,tsx}\" --write"
