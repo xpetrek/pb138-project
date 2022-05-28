@@ -5,11 +5,43 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const router = express.Router();
 
+/**
+ * @swagger 
+ * /reservations:
+ *    get:
+ *      summary: Gets all reservations. The reservations can be filtered using query parameters.
+ *      parameters:
+ *          - in: query
+ *            name: roomId
+ *            schema:
+ *              type: integer
+ *              example: 4
+ *            required: true
+ *          - in: query
+ *            name: from
+ *            schema:
+ *              type: string
+ *              example: 2022-10-08
+ *            description: Date
+ *          - in: query
+ *            name: to
+ *            schema:
+ *              type: string
+ *              example: 2022-10-10
+ *            description: Date
+ *      responses:
+ *        200:
+ *          description: Returns Array of Reservation objects as JSON
+ *        404:
+ *          description: Missing room ID
+ *        500:
+ *          description: Server error
+ */
 router.get("/reservations", async (req, res) => {
     const roomId = req.query.roomId as string;
 
     if (!roomId) {
-        return res.status(400).json({ message: "Missing roomId" })
+        return res.status(404).json({ message: "Missing roomId" })
     }
 
     const from = req.query.from as string;
@@ -39,9 +71,39 @@ router.get("/reservations", async (req, res) => {
 
 });
 
+/**
+ * @swagger 
+ * /reservations/{id}:
+ *    get:
+ *      summary: Gets a reservation.
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              example: 4
+ *            required: true
+ *            description: ID of reservation. 
+ *           
+ *      responses:
+ *        200:
+ *          description: Returns Reservation object as JSON
+ *        500:
+ *          description: Server error
+ */
 router.get("/reservations/:id", async (req, res) => {
     const id = req.params.id as string;
+
     try {
+        const reservationExists = await prisma.reservation.count({
+            where: {
+                id: parseInt(id),
+            }
+        })
+        if (!reservationExists) {
+            return res.status(404).json({ message: `The reservation with id (${id}) does not exist` })
+        }
+
         const reservation = await prisma.reservation.findUnique({
             where: {
                 id: parseInt(id),
@@ -55,6 +117,55 @@ router.get("/reservations/:id", async (req, res) => {
     }
 });
 
+/**
+ * @swagger 
+ * /reservations:
+ *    post:
+ *      summary: Creates a reservation (if there are no conflicts)
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                  - from
+ *                  - to
+ *                  - roomId
+ *                  - ownerId
+ *              properties:
+ *                from:
+ *                  type: string
+ *                  example: 2022-10-08
+ *                  description: Date
+ *                to:
+ *                  type: string
+ *                  example: 2022-10-10
+ *                  description: Date
+ *                roomId:
+ *                  type: integer
+ *                  example: 1
+ *                userId:
+ *                  type: integer
+ *                  example: 1
+ *                  
+ *      responses:
+ *        201:
+ *          description: Created
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  reservationId:
+ *                    description: An ID of the created reservation.
+ *                    type: integer
+ *                    example: 1
+ *        400:
+ *          description: There is a conflicting reservation
+ *        500:
+ *          description: Server error
+ */
 router.post("/reservations", async (req, res) => {
     const { from, to, roomId, userId } = req.body;
     const fromDate = new Date(from);
@@ -94,13 +205,7 @@ router.post("/reservations", async (req, res) => {
                 }
             }
         });
-
-        if (createdReservation === null) {
-            return res
-                .status(400)
-                .json({ message: "The creation of a reservation has failed" });
-        }
-        res.status(201).json({ id: createdReservation.id })
+        res.status(201).json({ reservationId: createdReservation.id })
     } catch (e) {
         return res
             .status(500)
@@ -108,10 +213,42 @@ router.post("/reservations", async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger 
+ * /reservations/{id}:
+ *    delete:
+ *      summary: Deletes a reservation.
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              example: 5
+ *            required: true
+ *            description: ID of the reservation that should be deleted. 
+ *           
+ *      responses:
+ *        200:
+ *          description: Deleted
+ *        404:
+ *          description: The reservation with given id does not exist
+ *        500:
+ *          description: Server error
+ */
 router.delete("/reservations/:id", async (req, res) => {
     const id = parseInt(req.params.id as string);
 
     try {
+        const reservationExists = await prisma.reservation.count({
+            where: {
+                id: id,
+            }
+        })
+        if (!reservationExists) {
+            return res.status(404).json({ message: `The reservation with id (${id}) does not exist` })
+        }
+
         await prisma.reservation.delete({
             where: {
                 id: id,
