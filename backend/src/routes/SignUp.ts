@@ -68,7 +68,6 @@ router.post(
 					email
 				}
 			});
-			console.log(emailExists);
 			if (emailExists) {
 				return res.status(400).json({
 					message: `Sign-up has failed, the account with the given email (${email}) already exists`

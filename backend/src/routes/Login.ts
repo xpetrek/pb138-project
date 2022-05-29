@@ -49,14 +49,16 @@ const JWT_SECRET =
  *        400:
  *          description: Validation error
  *        401:
- *          description: Authentication failed due
+ *          description: Authentication failed
  *        500:
  *          description: Server error
  */
 router.post(
 	'/login',
-	body('email', 'email has wrong format').isEmail(),
-	body('password', 'password length must be at least 8').isLength({ min: 8 }),
+	body('email', 'email has wrong format').isEmail().notEmpty(),
+	body('password', 'password length must be at least 8')
+		.isLength({ min: 8 })
+		.notEmpty(),
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -73,7 +75,7 @@ router.post(
 
 			if (user === null) {
 				return res.status(401).json({
-					message: `The email (${email}) your provided is already tied to an account`
+					message: `The email (${email}) your provided is incorrect`
 				});
 			}
 

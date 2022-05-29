@@ -58,6 +58,7 @@
     "preset": "ts-jest",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "maxWorkers": 1
   }
 }
