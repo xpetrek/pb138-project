@@ -43,8 +43,8 @@ const router = express.Router();
  */
 router.get(
 	'/rooms',
-	query('from', 'from is not a Date').isDate(),
-	query('to', 'to is not a Date').isDate(),
+	query('from', 'from is not a Date').optional().isDate(),
+	query('to', 'to is not a Date').optional().isDate(),
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -111,7 +111,6 @@ router.get(
  */
 router.get('/rooms/:id', async (req, res) => {
 	const id = req.params.id as string;
-
 	try {
 		const roomExists = await prisma.room.count({
 			where: {
