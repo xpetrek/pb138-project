@@ -188,6 +188,11 @@ router.post(
 		const { from, to, roomId, userId } = req.body;
 		const fromDate = new Date(from);
 		const toDate = new Date(to);
+		if (fromDate > toDate) {
+			return res
+				.status(400)
+				.json({ message: 'From cannot be greater than to' });
+		}
 
 		try {
 			const roomExists = await prisma.room.count({
