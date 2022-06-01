@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String
+  location     String
+  pricePerDay  Decimal
+  reservations Reservation[]
+  owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId      Int
+  pictures     Picture[]
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  passwordHash String
+  reservations Reservation[]
+  ownedRooms   Room[]
+}
+
+model Reservation {
+  id     Int      @id @default(autoincrement())
+  from   DateTime
+  to     DateTime
+  room   Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId Int
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Picture {
+  id     Int    @id @default(autoincrement())
+  url    String
+  label  String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId Int
+}

@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  postgresDev:
+    image: postgres:14.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=roomsUser
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=dev
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5438:5432'
+  postgresTest:
+    image: postgres:14.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=roomsUser
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=test
+    ports:
+      - '5439:5432'
+volumes:
+  postgres:
