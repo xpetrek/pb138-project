@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import useField from '../hooks/useField';
 import { useTranslation } from '../hooks/useTranslation';
 import usePageTitle from '../hooks/usePageTitle';
+import userService from '../hooks/userService';
 
 const Login = () => {
 	const t = useTranslation();
@@ -12,7 +13,7 @@ const Login = () => {
 	const [email, emailProps] = useField('name', true);
 	const [password, passwordProps] = useField('name', true);
 	const handleLogin = () => {
-		console.log('login');
+		userService.logIn(email, password);
 	};
 
 	const handleLogout = () => {

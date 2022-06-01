@@ -5,6 +5,7 @@ import { FormEvent, useState } from 'react';
 import useField from '../hooks/useField';
 import usePageTitle from '../hooks/usePageTitle';
 import { useTranslation } from '../hooks/useTranslation';
+import userService from '../hooks/userService';
 
 const SignUp = () => {
 	const t = useTranslation();
@@ -15,7 +16,7 @@ const SignUp = () => {
 	const [password, passwordProps] = useField('name', true);
 
 	const handleSIgnUp = () => {
-		console.log('signUp');
+		userService.signUp(name, email, password);
 	};
 
 	return (

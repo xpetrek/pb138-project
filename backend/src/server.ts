@@ -21,6 +21,15 @@ const swaggerOptions = {
 	apis: ['./src/routes/**.ts']
 };
 
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
+
+// app.use(cors({
+//     origin: '*'
+// }));
+
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
@@ -29,6 +38,6 @@ app.use(loginRoute);
 app.use(signupRoute);
 app.use(usersRoute);
 app.use(roomsRoute);
-app.use(reservationsRoute);
+app.use(reservationsRoute); 
 
 export default app;
