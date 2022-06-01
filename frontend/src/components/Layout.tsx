@@ -29,9 +29,14 @@ const Layout: FC<Props> = ({ children }) => {
 						</Button>
 						<Box sx={{ flexGrow: 1 }} />
 						{!user ? (
-							<Button color="secondary" component={Link} to="/login">
-								Login
-							</Button>
+							<>
+								<Button color="secondary" component={Link} to="/login">
+									Login
+								</Button>
+								<Button color="secondary" component={Link} to="/signUp">
+									SignUp
+								</Button>
+							</>
 						) : (
 							<Button color="secondary">Logout</Button>
 						)}

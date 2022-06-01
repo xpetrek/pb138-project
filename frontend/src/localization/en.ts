@@ -11,5 +11,10 @@ export default {
 	logout: 'Logout',
 	delete: 'Delete',
 	required: 'Required',
-	name: 'Name'
+	name: 'Name',
+	location: 'Location',
+	ppd: 'Price/Day',
+	email: 'Email',
+	password: 'Password',
+	search: 'Search'
 };

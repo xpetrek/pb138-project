@@ -10,5 +10,10 @@ export default {
 	logout: 'Odhlásenie',
 	delete: 'Zmaž',
 	required: 'Povinné',
-	name: 'Názov'
+	name: 'Názov',
+	location: 'Lokácia',
+	ppd: 'Cena/Deň',
+	email: 'Email',
+	password: 'Heslo',
+	search: 'Vyhladať'
 };
