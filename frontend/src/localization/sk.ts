@@ -12,7 +12,7 @@ export default {
 	required: 'Povinné',
 	name: 'Názov',
 	location: 'Lokácia',
-	ppd: 'Cena/Deň',
+	ppd: 'Cena za deň v CZK',
 	email: 'Email',
 	password: 'Heslo',
 	search: 'Vyhladať'

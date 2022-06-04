@@ -6,21 +6,24 @@ const create = (
 	location: string,
 	pricePerDay: number
 ) => {
-	let returnResponse;
 	fetch(`${BACKEND_URL}/rooms`, {
 		method: 'POST',
-		body: JSON.stringify({ name, description, location, pricePerDay }),
+		body: JSON.stringify({
+			name,
+			description,
+			location,
+			pricePerDay,
+			ownerId: 1
+		}),
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	}).then(response => {
-		returnResponse = response;
+		console.log(response.json().then(res => console.log(res)));
 	});
-	return returnResponse;
 };
 
 const get = (from: string, to: string, location: string) => {
-	let returnResponse;
 	fetch(`${BACKEND_URL}/rooms`, {
 		method: 'POST',
 		body: JSON.stringify({ from, to, location }),
@@ -28,22 +31,19 @@ const get = (from: string, to: string, location: string) => {
 			'Content-Type': 'application/json'
 		}
 	}).then(response => {
-		returnResponse = response;
+		console.log(response.json());
 	});
-	return returnResponse;
 };
 
 const getById = (id: number) => {
-	let returnResponse;
 	fetch(`${BACKEND_URL}/rooms/${id}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	}).then(response => {
-		returnResponse = response;
+		console.log(response.json());
 	});
-	return returnResponse;
 };
 
 const remove = (id: number) => {
@@ -62,8 +62,8 @@ const remove = (id: number) => {
 
 const roomService = {
 	create,
-    get,
-    getById,
+	get,
+	getById,
 	remove
 };
 

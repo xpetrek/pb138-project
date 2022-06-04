@@ -1,22 +1,26 @@
 import { Button, Paper, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import useLoggedInUser from '../hooks/useLoggedInUser';
 import useField from '../hooks/useField';
 import usePageTitle from '../hooks/usePageTitle';
 import { useTranslation } from '../hooks/useTranslation';
-import userService from '../hooks/userService';
 
 const SignUp = () => {
 	const t = useTranslation();
 	usePageTitle('Login');
+	const navigate = useNavigate();
 
 	const [name, nameProps] = useField('name', true);
 	const [email, emailProps] = useField('name', true);
 	const [password, passwordProps] = useField('name', true);
+	const { session, loading, error, login, signUp } = useLoggedInUser();
 
 	const handleSIgnUp = () => {
-		userService.signUp(name, email, password);
+		signUp(name, email, password);
+		navigate('/');
 	};
 
 	return (

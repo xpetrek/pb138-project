@@ -13,7 +13,7 @@ export default {
 	required: 'Required',
 	name: 'Name',
 	location: 'Location',
-	ppd: 'Price/Day',
+	ppd: 'Price per day in CZK',
 	email: 'Email',
 	password: 'Password',
 	search: 'Search'

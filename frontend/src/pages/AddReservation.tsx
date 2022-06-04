@@ -8,6 +8,8 @@ import { useState } from 'react';
 import useField from '../hooks/useField';
 import { useTranslation } from '../hooks/useTranslation';
 import usePageTitle from '../hooks/usePageTitle';
+import reservationService from '../hooks/reservationService';
+import roomService from '../hooks/roomService';
 
 const AddReservation = () => {
 	const t = useTranslation();
@@ -17,7 +19,7 @@ const AddReservation = () => {
 	const [description, descriptionProps] = useField('');
 	const [location, locationProps] = useField('');
 
-	const [state, setState] = useState([
+	const [datePickerState, setDatePickerState] = useState([
 		{
 			startDate: subDays(new Date(), 0),
 			endDate: addDays(new Date(), 2),
@@ -28,7 +30,7 @@ const AddReservation = () => {
 	// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 	const handleOnChange = (ranges: RangeKeyDict) => {
 		const { selection } = ranges;
-		setState([
+		setDatePickerState([
 			{
 				startDate: selection.startDate ?? new Date(),
 				endDate: selection.endDate ?? new Date(),
@@ -37,21 +39,28 @@ const AddReservation = () => {
 		]);
 	};
 
+	const handleSearch = () => {
+		console.log(datePickerState[0].startDate.toISOString());
+		console.log(datePickerState[0].endDate.toISOString());
+		roomService.get(
+			datePickerState[0].endDate.toISOString(),
+			datePickerState[0].startDate.toLocaleDateString('en-CA'),
+			location
+		);
+	};
+
 	return (
 		<>
 			<Box>
-				<TextField label={t('name')} {...nameProps} type="text" />
-				<TextField label={t('description')} {...descriptionProps} type="text" />
 				<TextField label={t('location')} {...locationProps} type="text" />
-
 				<DateRangePicker
 					onChange={handleOnChange}
 					moveRangeOnFirstSelection={false}
-					ranges={state}
+					ranges={datePickerState}
 					direction="vertical"
 				/>
 
-				<Button>{t('search')}</Button>
+				<Button onClick={handleSearch}>{t('search')}</Button>
 			</Box>
 			<Box>Search results will occur here</Box>
 		</>

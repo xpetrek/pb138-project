@@ -4,7 +4,7 @@ const create = (from: string, to: string, roomId: number) => {
 	let returnResponse;
 	fetch(`${BACKEND_URL}/reservations`, {
 		method: 'POST',
-		body: JSON.stringify({ from, to, roomId}),
+		body: JSON.stringify({ from, to, roomId }),
 		headers: {
 			'Content-Type': 'application/json'
 		}
@@ -16,6 +16,9 @@ const create = (from: string, to: string, roomId: number) => {
 
 const get = (from: string, to: string, location: string) => {
 	let returnResponse;
+	console.log(from);
+	console.log(to);
+	console.log(location);
 	fetch(`${BACKEND_URL}/reservations`, {
 		method: 'POST',
 		body: JSON.stringify({ from, to, location }),
@@ -23,7 +26,7 @@ const get = (from: string, to: string, location: string) => {
 			'Content-Type': 'application/json'
 		}
 	}).then(response => {
-		returnResponse = response;
+		console.log(response);
 	});
 	return returnResponse;
 };
