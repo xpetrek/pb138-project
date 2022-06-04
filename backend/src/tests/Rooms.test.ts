@@ -9,20 +9,25 @@ const prisma = new PrismaClient();
 describe('/rooms tests', () => {
 	let userId: number;
 	let roomId: number;
+	let accessToken: string;
 
 	beforeAll(async () => {
 		await prisma.user.deleteMany();
 		await prisma.room.deleteMany();
 		await prisma.reservation.deleteMany();
 
-		const user = await prisma.user.create({
-			data: {
-				name: 'Martin Kacenga',
-				email: 'martinkacenga@gmail.com',
-				passwordHash: 'dhquwgfyqgkchsbakgdyq'
-			}
+		await request.post('/signup').send({
+			name: 'Martin Kacenga',
+			email: 'martinkacenga@gmail.com',
+			password: '12345678'
 		});
-		userId = user.id;
+
+		const response = await request.post('/login').send({
+			email: 'martinkacenga@gmail.com',
+			password: '12345678'
+		});
+		accessToken = response.body.accessToken;
+		userId = response.body.user.id;
 
 		const room = await prisma.room.create({
 			data: {
@@ -30,7 +35,7 @@ describe('/rooms tests', () => {
 				description: 'Beautiful flat not far from the center of Brno.',
 				location: 'Brno',
 				pricePerDay: 250,
-				ownerId: user.id
+				ownerId: userId
 			}
 		});
 		roomId = room.id;
@@ -40,7 +45,7 @@ describe('/rooms tests', () => {
 				from: new Date('2020-09-10'),
 				to: new Date('2020-09-10'),
 				roomId: room.id,
-				userId: user.id
+				userId
 			}
 		});
 	});
@@ -99,6 +104,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms with empty name', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				description: 'Beautiful',
 				location: 'Brno',
@@ -111,6 +117,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms with empty description', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Big room',
 				location: 'Brno',
@@ -123,6 +130,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms with empty location', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Big room',
 				description: 'Beautiful',
@@ -135,6 +143,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms with empty pricePerDay', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Big room',
 				description: 'Beautiful',
@@ -147,6 +156,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms with empty ownerId', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Big room',
 				description: 'Beautiful',
@@ -159,6 +169,7 @@ describe('/rooms tests', () => {
 	it('POST /rooms create valid room', async () => {
 		await request
 			.post('/rooms')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				name: 'Big room',
 				description: 'Beautiful',
@@ -170,10 +181,16 @@ describe('/rooms tests', () => {
 	});
 
 	it('DELETE /rooms/{id} with good ID', async () => {
-		await request.get(`/rooms/${roomId}`).expect(200);
+		await request
+			.delete(`/rooms/${roomId}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.expect(200);
 	});
 
 	it('DELETE /rooms/{id} with non-existent ID', async () => {
-		await request.get(`/rooms/${roomId + 5}`).expect(404);
+		await request
+			.delete(`/rooms/${roomId + 5}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.expect(404);
 	});
 });

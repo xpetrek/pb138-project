@@ -11,9 +11,11 @@ import reservationsRoute from './routes/Reservations';
 
 const app = express();
 
-app.use(cors({
-	origin: "http://localhost:3000"
-}))
+app.use(
+	cors({
+		origin: 'http://localhost:3000'
+	})
+);
 
 const swaggerOptions = {
 	swaggerDefinition: {

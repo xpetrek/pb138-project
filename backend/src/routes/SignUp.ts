@@ -1,7 +1,5 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { JWT_SECRET } from './Login';
-import jsonwebtoken from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
@@ -45,9 +43,6 @@ const router = express.Router();
  *                  user:
  *                    description: Created user object.
  *                    type: object
- *                  token:
- *                    description: JWT token
- *                    type: string
  *        400:
  *          description: Validation error
  *        500:
@@ -89,9 +84,14 @@ router.post(
 					passwordHash
 				}
 			});
-			const partialUser = {id: createdUser.id, name: createdUser.name, email: createdUser.email};
-			res.status(201).json({ token: jsonwebtoken.sign({ user: createdUser.email }, JWT_SECRET),
-									user: partialUser });
+			const partialUser = {
+				id: createdUser.id,
+				name: createdUser.name,
+				email: createdUser.email
+			};
+			res.status(201).json({
+				user: partialUser
+			});
 		} catch (e) {
 			return res.status(500).json({ message: e.message });
 		}
