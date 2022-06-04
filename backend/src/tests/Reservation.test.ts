@@ -10,20 +10,25 @@ describe('/reservations tests', () => {
 	let userId: number;
 	let roomId: number;
 	let reservationId: number;
+	let accessToken: string;
 
 	beforeAll(async () => {
 		await prisma.user.deleteMany();
 		await prisma.room.deleteMany();
 		await prisma.reservation.deleteMany();
 
-		const user = await prisma.user.create({
-			data: {
-				name: 'Martin Kacenga',
-				email: 'martinkacenga@gmail.com',
-				passwordHash: 'dhquwgfyqgkchsbakgdyq'
-			}
+		await request.post('/signup').send({
+			name: 'Martin Kacenga',
+			email: 'martinkacenga@gmail.com',
+			password: '12345678'
 		});
-		userId = user.id;
+
+		const response = await request.post('/login').send({
+			email: 'martinkacenga@gmail.com',
+			password: '12345678'
+		});
+		accessToken = response.body.accessToken;
+		userId = response.body.user.id;
 
 		const room = await prisma.room.create({
 			data: {
@@ -31,7 +36,7 @@ describe('/reservations tests', () => {
 				description: 'Beautiful flat not far from the center of Brno.',
 				location: 'Brno',
 				pricePerDay: 250,
-				ownerId: user.id
+				ownerId: userId
 			}
 		});
 		roomId = room.id;
@@ -41,7 +46,7 @@ describe('/reservations tests', () => {
 				from: new Date('2020-09-10'),
 				to: new Date('2020-09-10'),
 				roomId: room.id,
-				userId: user.id
+				userId
 			}
 		});
 		reservationId = reservation.id;
@@ -97,6 +102,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations with empty from', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				to: '2022-05-08',
 				roomId,
@@ -108,6 +114,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations with empty to', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				from: '2022-05-08',
 				roomId,
@@ -119,6 +126,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations with empty roomId', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				to: '2022-04-08',
 				from: '2022-05-08',
@@ -130,6 +138,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations with empty userId', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				to: '2022-04-08',
 				from: '2022-05-08',
@@ -141,6 +150,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations with from > to', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				from: '2022-05-08',
 				to: '2022-04-08',
@@ -153,6 +163,7 @@ describe('/reservations tests', () => {
 	it('POST /reservations create valid reservation', async () => {
 		await request
 			.post('/reservations')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				from: '2022-04-08',
 				to: '2022-05-08',
@@ -163,10 +174,16 @@ describe('/reservations tests', () => {
 	});
 
 	it('DELETE /reservations/{id} with good ID', async () => {
-		await request.get(`/reservations/${reservationId}`).expect(200);
+		await request
+			.delete(`/reservations/${reservationId}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.expect(200);
 	});
 
 	it('DELETE /reservations/{id} with non-existent ID', async () => {
-		await request.get(`/reservations/${reservationId + 5}`).expect(404);
+		await request
+			.delete(`/reservations/${reservationId + 5}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.expect(404);
 	});
 });

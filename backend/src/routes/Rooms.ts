@@ -2,6 +2,8 @@ import express from 'express';
 import { body, query, validationResult } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
 
+import { validateToken } from '../authentication';
+
 const prisma = new PrismaClient();
 const router = express.Router();
 
@@ -210,6 +212,7 @@ router.post(
 	body('location').notEmpty(),
 	body('pricePerDay').notEmpty(),
 	body('ownerId').notEmpty(),
+	validateToken,
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -217,6 +220,12 @@ router.post(
 		}
 		const { name, description, location, pricePerDay, ownerId, pictures } =
 			req.body;
+
+		if (res.locals.user.id !== ownerId) {
+			return res.status(401).json({
+				message: `The user with id ${res.locals.user.id} is not authorized to create this room`
+			});
+		}
 
 		try {
 			const createdRoom = await prisma.room.create({
@@ -260,19 +269,26 @@ router.post(
  *        500:
  *          description: Server error
  */
-router.delete('/rooms/:id', async (req, res) => {
+router.delete('/rooms/:id', validateToken, async (req, res) => {
 	const id = parseInt(req.params.id as string);
 
 	try {
-		const roomExists = await prisma.room.count({
+		const room = await prisma.room.findUnique({
 			where: {
 				id
 			}
 		});
-		if (!roomExists) {
+
+		if (!room) {
 			return res
 				.status(404)
 				.json({ message: `The room with id (${id}) does not exist` });
+		}
+
+		if (res.locals.user.id !== room.ownerId) {
+			return res.status(401).json({
+				message: `The user with id ${res.locals.user.id} is not authorized to delete this room`
+			});
 		}
 
 		const deletePictures = prisma.picture.deleteMany({
