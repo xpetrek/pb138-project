@@ -1,13 +1,14 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import jsonwebtoken from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+
+import { generateAccessToken } from '../authentication';
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-const JWT_SECRET =
+export const JWT_SECRET =
 	'sZ-d8!}2a;L]eKbKa+HE*qWFtDFRWsw6}_ZB2UJ7SHP]v]:UD+Sc%H\fBhws9&Bh';
 
 /**
@@ -30,7 +31,7 @@ const JWT_SECRET =
  *                  example: martinkacenga@gmail.com
  *                password:
  *                  type: string
- *                  example: 123456
+ *                  example: 12345678
  *                  minLength: 8
  *      responses:
  *        200:
@@ -40,12 +41,11 @@ const JWT_SECRET =
  *              schema:
  *                type: object
  *                properties:
- *                  token:
+ *                  accessToken:
  *                    type: string
  *                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI
- *                  userId:
- *                    type: integer
- *                    example: 1
+ *                  user:
+ *                    type: object
  *        400:
  *          description: Validation error
  *        401:
@@ -86,9 +86,10 @@ router.post(
 				});
 			}
 
+			const partialUser = { id: user.id, name: user.name, email: user.email };
 			return res.status(200).json({
-				token: jsonwebtoken.sign({ user: user.email }, JWT_SECRET),
-				userId: user.id
+				accessToken: generateAccessToken(partialUser),
+				user: partialUser
 			});
 		} catch (e) {
 			return res.status(500).json({ message: e.message });

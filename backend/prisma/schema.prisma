@@ -35,6 +35,7 @@ model Reservation {
   id     Int      @id @default(autoincrement())
   from   DateTime
   to     DateTime
+  price  Decimal
   room   Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
   roomId Int
   user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)

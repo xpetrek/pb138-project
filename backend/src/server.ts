@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 
@@ -9,6 +10,12 @@ import roomsRoute from './routes/Rooms';
 import reservationsRoute from './routes/Reservations';
 
 const app = express();
+
+app.use(
+	cors({
+		origin: 'http://localhost:3000'
+	})
+);
 
 const swaggerOptions = {
 	swaggerDefinition: {

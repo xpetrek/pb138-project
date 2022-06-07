@@ -31,6 +31,7 @@ const router = express.Router();
  *                password:
  *                  type: string
  *                  example: 123456
+ *                  minLength: 8
  *      responses:
  *        201:
  *          description: Created
@@ -39,10 +40,9 @@ const router = express.Router();
  *              schema:
  *                type: object
  *                properties:
- *                  userId:
- *                    description: An ID of the created user.
- *                    type: integer
- *                    example: 1
+ *                  user:
+ *                    description: Created user object.
+ *                    type: object
  *        400:
  *          description: Validation error
  *        500:
@@ -84,7 +84,14 @@ router.post(
 					passwordHash
 				}
 			});
-			res.status(201).json({ userId: createdUser.id });
+			const partialUser = {
+				id: createdUser.id,
+				name: createdUser.name,
+				email: createdUser.email
+			};
+			res.status(201).json({
+				user: partialUser
+			});
 		} catch (e) {
 			return res.status(500).json({ message: e.message });
 		}
