@@ -4,8 +4,13 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import AddRoom from '../pages/AddRoom';
-import AddReservation from '../pages/AddReservation';
+import SearchRooms from '../pages/SearchRooms';
+import ShowRoom from '../pages/ShowRoom';
+import MyRooms from '../pages/MyRooms';
+import MyReservations from '../pages/MyReservations';
 import NotFound from '../pages/NotFound';
+
+import ProtectedRoute from './ProtectedRouter';
 
 const CustomRouter = () => (
 	<Routes>
@@ -13,7 +18,13 @@ const CustomRouter = () => (
 		<Route path="/login" element={<Login />} />
 		<Route path="/signUp" element={<SignUp />} />
 		<Route path="/addRoom" element={<AddRoom />} />
-		<Route path="/AddReservation" element={<AddReservation />} />
+		<Route path="/searchRooms" element={<SearchRooms />} />
+		<Route path="/myRooms" element={<MyRooms />} />
+		<Route path="/myReservations" element={<MyReservations />} />
+		{/* <ProtectedRoute path="/rooms/:id">
+			<ShowRoom />
+		</ProtectedRoute> */}
+		<Route path="/rooms/:id" element={<ShowRoom />} />
 		<Route path="/notFound" element={<NotFound />} />
 	</Routes>
 );

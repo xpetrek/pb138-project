@@ -15,5 +15,8 @@ export default {
 	ppd: 'Cena za deň v CZK',
 	email: 'Email',
 	password: 'Heslo',
-	search: 'Vyhladať'
+	search: 'Vyhladať',
+	from: 'Od dátumu',
+	to: 'Po dátum',
+	orderBy: 'Usporiadat podľa'
 };

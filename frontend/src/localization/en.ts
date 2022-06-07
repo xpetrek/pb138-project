@@ -16,5 +16,8 @@ export default {
 	ppd: 'Price per day in CZK',
 	email: 'Email',
 	password: 'Password',
-	search: 'Search'
+	search: 'Search',
+	from: 'Start date',
+	to: 'End date',
+	orderBy: 'Order By'
 };

@@ -1,66 +1,68 @@
 import { BACKEND_URL } from '../utils/constants';
 
-const create = (from: string, to: string, roomId: number) => {
-	let returnResponse;
-	fetch(`${BACKEND_URL}/reservations`, {
+const create = async (
+	from: string,
+	to: string,
+	roomId: number,
+	userId: number,
+	token: string
+) => {
+	const response = await fetch(`${BACKEND_URL}/reservations`, {
 		method: 'POST',
-		body: JSON.stringify({ from, to, roomId }),
+		body: JSON.stringify({ from, to, roomId, userId }),
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
+	});
+	return response;
+};
+
+const get = async (from?: string, to?: string, location?: string) => {
+	const response = await fetch(`${BACKEND_URL}/reservations`, {
+		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then(response => {
-		returnResponse = response;
 	});
-	return returnResponse;
+	return response;
 };
 
-const get = (from: string, to: string, location: string) => {
-	let returnResponse;
-	console.log(from);
-	console.log(to);
-	console.log(location);
-	fetch(`${BACKEND_URL}/reservations`, {
-		method: 'POST',
-		body: JSON.stringify({ from, to, location }),
+const getById = async (id: number) => {
+	const response = await fetch(`${BACKEND_URL}/reservations/${id}`, {
+		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then(response => {
-		console.log(response);
 	});
-	return returnResponse;
+	return response;
 };
 
-const getById = (id: number) => {
-	let returnResponse;
-	fetch(`${BACKEND_URL}/reservations/${id}`, {
-		method: 'POST',
+const getByOwner = async (id: number) => {
+	const response = await fetch(`${BACKEND_URL}/reservations?ownerId${id}`, {
+		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then(response => {
-		returnResponse = response;
-	});
-	return returnResponse;
+	}).then();
+	return response;
 };
 
-const remove = (id: number) => {
-	let returnResponse;
-	fetch(`${BACKEND_URL}/reservations/${id}`, {
-		method: 'POST',
+const remove = async (id: number) => {
+	const response = await fetch(`${BACKEND_URL}/reservations/${id}`, {
+		method: 'DELETE',
 		body: JSON.stringify({ id }),
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then(response => {
-		returnResponse = response;
 	});
-	return returnResponse;
+	return response;
 };
 
 const reservationService = {
 	create,
 	get,
+	getByOwner,
 	getById,
 	remove
 };

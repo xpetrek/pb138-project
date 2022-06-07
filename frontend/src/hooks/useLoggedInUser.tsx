@@ -36,7 +36,7 @@ type Props = {
 };
 
 export const UserProvider: FC<Props> = ({ children }) => {
-	const [session, setSession] = useState<SessionData>();
+	const [session, setSession] = useState<SessionData | undefined>(undefined);
 	const [error, setError] = useState<Error>();
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -71,7 +71,20 @@ export const UserProvider: FC<Props> = ({ children }) => {
 			}
 		})
 			.then(response => {
-				response.json().then(res => setSession({ ...res }));
+				response.json().then(res => {
+					const copy: SessionData = {
+						user: {
+							email,
+							id: res.userId,
+							name: ''
+						},
+						token: res.token
+					};
+					setSession(copy);
+					console.log('copy');
+					console.log(copy);
+					console.log(session);
+				});
 			})
 			.catch(err => setError(err))
 			.finally(() => setLoading(false));
@@ -79,6 +92,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
 
 	const logout = () => {
 		console.log('logout!');
+		setSession(undefined);
 	};
 
 	const memoedValue = useMemo(

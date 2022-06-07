@@ -5,13 +5,14 @@ import { AppBar, Container, Toolbar, Button, Box } from '@mui/material';
 // import useLoggedInUser from '../../hooks/useLoggedInUser';
 import { useTranslation } from '../hooks/useTranslation';
 import LanguageSwitch from '../components/LanguageSwitch';
+import useLoggedInUser from '../hooks/useLoggedInUser';
 
 type Props = {
 	children?: React.ReactNode;
 };
 
 const Layout: FC<Props> = ({ children }) => {
-	const user = undefined;
+	const { session, error, login, logout } = useLoggedInUser();
 	const t = useTranslation();
 	return (
 		<>
@@ -24,11 +25,17 @@ const Layout: FC<Props> = ({ children }) => {
 						<Button color="secondary" component={Link} to="/addRoom">
 							AddRoom
 						</Button>
-						<Button color="secondary" component={Link} to="/addReservation">
-							Reservations
+						<Button color="secondary" component={Link} to="/searchRooms">
+							SearchRooms
+						</Button>
+						<Button color="secondary" component={Link} to="/myRooms">
+							MyRooms
+						</Button>
+						<Button color="secondary" component={Link} to="/myReservations">
+							MyReservations
 						</Button>
 						<Box sx={{ flexGrow: 1 }} />
-						{!user ? (
+						{!session?.user ? (
 							<>
 								<Button color="secondary" component={Link} to="/login">
 									Login
@@ -38,7 +45,9 @@ const Layout: FC<Props> = ({ children }) => {
 								</Button>
 							</>
 						) : (
-							<Button color="secondary">Logout</Button>
+							<Button color="secondary" onClick={logout}>
+								Logout
+							</Button>
 						)}
 						<LanguageSwitch />
 					</Toolbar>
