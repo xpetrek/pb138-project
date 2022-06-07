@@ -11,14 +11,18 @@ const router = express.Router();
  * @swagger
  * /reservations:
  *    get:
- *      summary: Gets all reservations for given roomId. The reservations can be further filtered using query parameters.
+ *      summary: Gets all reservations. The reservations can be further filtered using query parameters.
  *      parameters:
  *          - in: query
  *            name: roomId
  *            schema:
  *              type: integer
  *              example: 4
- *            required: true
+ *          - in: query
+ *            name: userId
+ *            schema:
+ *              type: integer
+ *              example: 2
  *          - in: query
  *            name: from
  *            schema:
@@ -41,25 +45,31 @@ const router = express.Router();
  */
 router.get(
 	'/reservations',
-	query('roomId', 'roomId is required').notEmpty(),
-	query('from', 'from is not a Date').isDate(),
-	query('to', 'to is not a Date').isDate(),
+	query('from', 'from is not a Date').optional().isDate(),
+	query('to', 'to is not a Date').optional().isDate(),
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
 		const roomId = req.query.roomId as string;
+		const userId = req.query.userId as string;
 		const from = req.query.from as string;
 		const to = req.query.to as string;
 
 		try {
-			let reservations = await prisma.reservation.findMany({
-				where: {
-					roomId: parseInt(roomId)
-				}
-			});
+			let reservations = await prisma.reservation.findMany();
 
+			if (roomId) {
+				reservations = reservations.filter(
+					reservation => reservation.roomId === parseInt(roomId)
+				);
+			}
+			if (userId) {
+				reservations = reservations.filter(
+					reservation => reservation.userId === parseInt(userId)
+				);
+			}
 			if (from) {
 				const fromDate = new Date(from);
 				reservations = reservations.filter(
@@ -205,16 +215,26 @@ router.post(
 		}
 
 		try {
-			const roomExists = await prisma.room.count({
+			const room = await prisma.room.findUnique({
 				where: {
 					id: roomId
 				}
 			});
-			if (!roomExists) {
+
+			if (!room) {
 				return res
 					.status(404)
 					.json({ message: `The room with id (${roomId}) does not exist` });
 			}
+
+			const difference = toDate.getTime() - fromDate.getTime();
+    		const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+			if (totalDays <= 0) {
+				return res
+					.status(400)
+					.json({ message: `The reservation has to be at least 1 day long!`});
+			}
+			const finalPrice = room.pricePerDay.mul(totalDays);
 
 			const userExists = await prisma.user.count({
 				where: {
@@ -248,6 +268,7 @@ router.post(
 				data: {
 					from: fromDate,
 					to: toDate,
+					price: finalPrice,
 					room: {
 						connect: {
 							id: roomId
