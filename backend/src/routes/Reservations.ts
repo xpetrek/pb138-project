@@ -58,7 +58,15 @@ router.get(
 		const to = req.query.to as string;
 
 		try {
-			let reservations = await prisma.reservation.findMany();
+			let reservations = await prisma.reservation.findMany({
+				include: {
+					room: {
+						select: {
+							pictures: true,
+						}
+					}
+				}
+			});
 
 			if (roomId) {
 				reservations = reservations.filter(
