@@ -1,24 +1,19 @@
 import { Box, Grid } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import roomService from '../hooks/roomService';
+import reservationService from '../hooks/reservationService';
 import useLoggedInUser from '../hooks/useLoggedInUser';
 import { useTranslation } from '../hooks/useTranslation';
-import { RoomData } from '../utils/types';
+import { ReservationData } from '../utils/types';
 
 import AddCard from './AddCard';
-import RoomCard from './RoomCard';
+import ReservationCard from './ReservationCard';
 
 type Props = {
-	rooms: RoomData[];
-	isEditingPage?: boolean;
-	setRooms: Dispatch<SetStateAction<RoomData[]>>;
+	reservations: ReservationData[];
+	setReservations: Dispatch<SetStateAction<ReservationData[]>>;
 };
-const RoomCardSearchResult = ({
-	rooms,
-	isEditingPage = false,
-	setRooms
-}: Props) => {
+const RoomCardSearchResult = ({ reservations, setReservations }: Props) => {
 	const t = useTranslation();
 	const { session } = useLoggedInUser();
 	const [loading, setLoading] = useState<boolean>(true);
@@ -26,10 +21,10 @@ const RoomCardSearchResult = ({
 	const handleDelete = (id: number, index: number) => {
 		setLoading(true);
 		if (!session?.token) return;
-		roomService.remove(id, session.token);
-		const copy = rooms;
+		reservationService.remove(id, session.token);
+		const copy = reservations;
 		copy.splice(index, 1);
-		setRooms(copy);
+		setReservations(copy);
 		setLoading(false);
 	};
 
@@ -40,18 +35,12 @@ const RoomCardSearchResult = ({
 			alignItems="stretch"
 			sx={{ aspectRatio: 1 / 1 }}
 		>
-			{isEditingPage ? (
-				<Grid item xs={12} sm={6} md={4} lg={3} display="flex">
-					<AddCard />
-				</Grid>
-			) : null}
-			{rooms.map((obj, i) => (
+			{reservations.map((obj, i) => (
 				<Grid item xs={12} sm={6} md={4} lg={3} key={i} display="flex">
-					<RoomCard
-						room={obj}
+					<ReservationCard
+						reservation={obj}
 						handleDelete={handleDelete}
 						index={i}
-						canDelete={isEditingPage && obj.ownerId === session?.user.id}
 					/>
 				</Grid>
 			))}

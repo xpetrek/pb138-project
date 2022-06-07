@@ -17,11 +17,7 @@ const Login = () => {
 
 	const handleLogin = () => {
 		login(email, password);
-		// navigate('/');
-	};
-
-	const handleLogout = () => {
-		logout();
+		navigate('/searchRooms');
 	};
 
 	return (

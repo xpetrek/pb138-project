@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Button, Box } from '@mui/material';
 
 // import useLoggedInUser from '../../hooks/useLoggedInUser';
@@ -14,6 +14,8 @@ type Props = {
 const Layout: FC<Props> = ({ children }) => {
 	const { session, error, login, logout } = useLoggedInUser();
 	const t = useTranslation();
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<AppBar position="fixed">
@@ -35,7 +37,7 @@ const Layout: FC<Props> = ({ children }) => {
 							MyReservations
 						</Button>
 						<Box sx={{ flexGrow: 1 }} />
-						{!session?.user ? (
+						{!session?.token ? (
 							<>
 								<Button color="secondary" component={Link} to="/login">
 									Login
@@ -45,7 +47,13 @@ const Layout: FC<Props> = ({ children }) => {
 								</Button>
 							</>
 						) : (
-							<Button color="secondary" onClick={logout}>
+							<Button
+								color="secondary"
+								onClick={() => {
+									logout();
+									navigate('/');
+								}}
+							>
 								Logout
 							</Button>
 						)}

@@ -63,6 +63,7 @@ router.get(
 					room: {
 						select: {
 							pictures: true,
+							name: true
 						}
 					}
 				}
@@ -236,11 +237,11 @@ router.post(
 			}
 
 			const difference = toDate.getTime() - fromDate.getTime();
-    		const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+			const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
 			if (totalDays <= 0) {
 				return res
 					.status(400)
-					.json({ message: `The reservation has to be at least 1 day long!`});
+					.json({ message: `The reservation has to be at least 1 day long!` });
 			}
 			const finalPrice = room.pricePerDay.mul(totalDays);
 
@@ -262,6 +263,9 @@ router.post(
 					},
 					to: {
 						gte: fromDate
+					},
+					roomId: {
+						equals: roomId
 					}
 				}
 			});

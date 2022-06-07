@@ -25,7 +25,7 @@ const CustomRouter = () => (
 			<ShowRoom />
 		</ProtectedRoute> */}
 		<Route path="/rooms/:id" element={<ShowRoom />} />
-		<Route path="/notFound" element={<NotFound />} />
+		<Route path="/*" element={<NotFound />} />
 	</Routes>
 );
 

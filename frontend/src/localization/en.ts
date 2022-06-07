@@ -19,5 +19,6 @@ export default {
 	search: 'Search',
 	from: 'Start date',
 	to: 'End date',
-	orderBy: 'Order By'
+	orderBy: 'Order By',
+	price: 'Price'
 };

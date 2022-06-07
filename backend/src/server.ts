@@ -28,15 +28,6 @@ const swaggerOptions = {
 	apis: ['./src/routes/**.ts']
 };
 
-const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:3000'
-}));
-
-// app.use(cors({
-//     origin: '*'
-// }));
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 

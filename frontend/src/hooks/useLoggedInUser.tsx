@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from '@mui/icons-material';
 import {
 	createContext,
 	FC,
@@ -8,17 +9,7 @@ import {
 } from 'react';
 
 import { BACKEND_URL } from '../utils/constants';
-
-type UserData = {
-	email: string;
-	id: number;
-	name: string;
-};
-
-type SessionData = {
-	user: UserData;
-	token?: string;
-};
+import { SessionData } from '../utils/types';
 
 type AuthContextType = {
 	session?: SessionData;
@@ -54,9 +45,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
 				'Content-Type': 'application/json'
 			}
 		})
-			.then(response => {
-				response.json().then(res => setSession({ ...res }));
-			})
+			.then(() => login(email, password))
 			.catch(err => setError(err))
 			.finally(() => setLoading(false));
 	};
@@ -73,12 +62,8 @@ export const UserProvider: FC<Props> = ({ children }) => {
 			.then(response => {
 				response.json().then(res => {
 					const copy: SessionData = {
-						user: {
-							email,
-							id: res.userId,
-							name: ''
-						},
-						token: res.token
+						user: res.user,
+						token: res.accessToken
 					};
 					setSession(copy);
 					console.log('copy');
@@ -92,6 +77,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
 
 	const logout = () => {
 		console.log('logout!');
+		console.log(session);
 		setSession(undefined);
 	};
 

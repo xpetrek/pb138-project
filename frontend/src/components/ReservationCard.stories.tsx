@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof ReservationCard>;
 
 const Template: ComponentStory<typeof ReservationCard> = args => (
-	<ReservationCard />
+	<ReservationCard {...args} />
 );
 
 export const GrandHotel = Template.bind({});

@@ -16,7 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
 import { RoomData } from '../utils/types';
 
-const RoomCard = (room: RoomData) => {
+type Props = {
+	room: RoomData;
+	index: number;
+	canDelete: boolean;
+	handleDelete: (id: number, index: number) => void;
+};
+
+const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 	const navigate = useNavigate();
 	const [focused, setFocused] = useState<boolean>(false);
 
@@ -32,9 +39,15 @@ const RoomCard = (room: RoomData) => {
 					justifyContent: 'end'
 				}}
 			>
-				<Button color="primary" variant="contained">
-					Delete
-				</Button>
+				{canDelete ? (
+					<Button
+						color="primary"
+						variant="contained"
+						onClick={() => handleDelete(room.id, index)}
+					>
+						Delete
+					</Button>
+				) : null}
 			</Box>
 			<CardActionArea onClick={() => navigate(`/rooms/${room.id}`)}>
 				<CardMedia

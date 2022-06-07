@@ -8,6 +8,30 @@ export type RoomData = {
 	pricePerDay: number;
 };
 
+export type ReservationData = {
+	id: number;
+	from: string;
+	to: string;
+	price: number;
+	userId: number;
+	roomId: number;
+	room: {
+		name: string;
+		pictures: { url: string; label: string }[];
+	};
+};
+
+export type UserData = {
+	email: string;
+	id: number;
+	name: string;
+};
+
+export type SessionData = {
+	user: UserData;
+	token?: string;
+};
+
 export type Location = '' | 'Brno' | 'Praha';
 
 export type Order =

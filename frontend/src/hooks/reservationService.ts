@@ -1,5 +1,19 @@
 import { BACKEND_URL } from '../utils/constants';
 
+const getUrlParams = (
+	roomId?: number,
+	userId?: number,
+	from?: string,
+	to?: string
+) => {
+	let url = '';
+	if (roomId !== undefined) url.concat(`roomId=${roomId}&`);
+	if (userId !== undefined) url.concat(`userId=${userId}&`);
+	if (from !== undefined && from.length > 0) url = url.concat(`from=${from}&`);
+	if (to !== undefined && to.length > 0) url = url.concat(`to=${to}&`);
+	return url;
+};
+
 const create = async (
 	from: string,
 	to: string,
@@ -18,8 +32,14 @@ const create = async (
 	return response;
 };
 
-const get = async (from?: string, to?: string, location?: string) => {
-	const response = await fetch(`${BACKEND_URL}/reservations`, {
+const get = async (
+	roomId?: number,
+	userId?: number,
+	from?: string,
+	to?: string
+) => {
+	const urlPath = getUrlParams(roomId, userId, from, to);
+	const response = await fetch(`${BACKEND_URL}/reservations?${urlPath}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -38,22 +58,23 @@ const getById = async (id: number) => {
 	return response;
 };
 
-const getByOwner = async (id: number) => {
-	const response = await fetch(`${BACKEND_URL}/reservations?ownerId${id}`, {
+const getByUser = async (id: number) => {
+	const response = await fetch(`${BACKEND_URL}/reservations?userId=${id}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then();
+	});
 	return response;
 };
 
-const remove = async (id: number) => {
+const remove = async (id: number, token: string) => {
 	const response = await fetch(`${BACKEND_URL}/reservations/${id}`, {
 		method: 'DELETE',
 		body: JSON.stringify({ id }),
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		}
 	});
 	return response;
@@ -62,7 +83,7 @@ const remove = async (id: number) => {
 const reservationService = {
 	create,
 	get,
-	getByOwner,
+	getByUser,
 	getById,
 	remove
 };

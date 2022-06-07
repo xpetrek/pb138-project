@@ -18,5 +18,6 @@ export default {
 	search: 'Vyhladať',
 	from: 'Od dátumu',
 	to: 'Po dátum',
-	orderBy: 'Usporiadat podľa'
+	orderBy: 'Usporiadat podľa',
+	price: 'Cena'
 };

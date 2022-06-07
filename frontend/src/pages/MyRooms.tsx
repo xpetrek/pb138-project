@@ -9,7 +9,7 @@ import { RoomData } from '../utils/types';
 const MyRooms = () => {
 	const { session, error, login, logout } = useLoggedInUser();
 	const [loading, setLoading] = useState<boolean>(true);
-	const [rooms, setRooms] = useState<RoomData[]>();
+	const [rooms, setRooms] = useState<RoomData[]>([]);
 
 	console.log('session');
 	console.log(session);
@@ -31,7 +31,7 @@ const MyRooms = () => {
 	console.log(rooms);
 
 	return rooms !== undefined ? (
-		<RoomCardSearchResult rooms={rooms} hasOwnership />
+		<RoomCardSearchResult rooms={rooms} isEditingPage setRooms={setRooms} />
 	) : null;
 };
 

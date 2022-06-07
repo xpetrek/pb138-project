@@ -1,4 +1,7 @@
 import { BACKEND_URL } from '../utils/constants';
+import { SessionData } from '../utils/types';
+
+import useLoggedInUser from './useLoggedInUser';
 
 const getUrlParams = (
 	from?: string,
@@ -21,8 +24,11 @@ const create = async (
 	location: string,
 	pricePerDay: number,
 	imageUrl: string,
-	imageLabel: string
+	imageLabel: string,
+	session: SessionData
 ) => {
+	if (!session?.token) return;
+
 	const response = await fetch(`${BACKEND_URL}/rooms`, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -31,10 +37,11 @@ const create = async (
 			location,
 			pricePerDay,
 			pictures: [{ url: imageUrl, label: imageLabel }],
-			ownerId: 1
+			ownerId: session?.user.id
 		}),
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${session.token}`
 		}
 	});
 	return response;
@@ -87,12 +94,13 @@ const getByUser = async (id: number) => {
 	return response;
 };
 
-const remove = async (id: number) => {
+const remove = async (id: number, token: string) => {
 	const response = await fetch(`${BACKEND_URL}/rooms/${id}`, {
 		method: 'DELETE',
 		body: JSON.stringify({ id }),
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		}
 	});
 	return response;

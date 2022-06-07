@@ -18,9 +18,9 @@ const SignUp = () => {
 	const [password, passwordProps] = useField('name', true);
 	const { session, loading, error, login, signUp } = useLoggedInUser();
 
-	const handleSIgnUp = () => {
+	const handleSignUp = () => {
 		signUp(name, email, password);
-		navigate('/');
+		navigate('/searchRooms');
 	};
 
 	return (
@@ -28,7 +28,7 @@ const SignUp = () => {
 			<TextField label={t('name')} {...nameProps} type="text" />
 			<TextField label={t('email')} {...emailProps} type="email" />
 			<TextField label={t('password')} {...passwordProps} type="password" />
-			<Button variant="contained" onClick={handleSIgnUp}>
+			<Button variant="contained" onClick={handleSignUp}>
 				Login
 			</Button>
 		</Box>

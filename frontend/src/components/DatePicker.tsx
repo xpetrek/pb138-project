@@ -1,39 +1,38 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { subDays, addDays } from 'date-fns';
 import { useState } from 'react';
-import { DateRangePicker, RangeKeyDict } from 'react-date-range';
+import { DateRangePicker, RangeKeyDict, Range } from 'react-date-range';
 
 type Props = {
 	price: number;
+	userReservationDates: Range[];
+	nonUserReservationDates: Range[];
 	handleRoomReservation: (from: Date, to: Date) => void;
 };
-const DatePicker = ({ price, handleRoomReservation }: Props) => {
+const DatePicker = ({
+	price,
+	userReservationDates,
+	nonUserReservationDates,
+	handleRoomReservation
+}: Props) => {
 	const [numberOfNights, setNumberOfNights] = useState<number>(0);
-	const [datePickerState, setDatePickerState] = useState([
-		{
-			startDate: subDays(new Date(), 0),
-			endDate: addDays(new Date(), 2),
-			key: 'selection'
-		},
-		{
-			startDate: subDays(new Date(), -10),
-			endDate: addDays(new Date(), -11),
-			color: 'grey',
-			disabled: true,
-			key: 'selection'
-		}
-	]);
+	const [datePickerState, setDatePickerState] = useState({
+		startDate: subDays(new Date(), 0),
+		endDate: addDays(new Date(), 1),
+		key: 'selection',
+		color: 'blue'
+	});
 
 	// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 	const handleOnChange = (ranges: RangeKeyDict) => {
-		const { selection } = ranges;
-		setDatePickerState([
-			{
-				startDate: selection.startDate ?? new Date(),
-				endDate: selection.endDate ?? new Date(),
-				key: selection.key ?? 'selection'
-			}
-		]);
+		console.log(ranges);
+		const selection = ranges.selection;
+		setDatePickerState({
+			startDate: selection.startDate ?? subDays(new Date(), 0),
+			endDate: selection.endDate ?? addDays(new Date(), 0),
+			key: 'selection',
+			color: 'blue'
+		});
 		const nightCounter = daysBetween(
 			selection.startDate ?? new Date(),
 			selection.endDate ?? new Date()
@@ -53,7 +52,11 @@ const DatePicker = ({ price, handleRoomReservation }: Props) => {
 					staticRanges={[]}
 					inputRanges={[]}
 					onChange={handleOnChange}
-					ranges={datePickerState}
+					ranges={[
+						datePickerState,
+						...nonUserReservationDates,
+						...userReservationDates
+					]}
 					dateDisplayFormat="MM-dd-yyyy"
 					direction="vertical"
 				/>
@@ -67,8 +70,8 @@ const DatePicker = ({ price, handleRoomReservation }: Props) => {
 				<Button
 					onClick={() =>
 						handleRoomReservation(
-							datePickerState[0].startDate,
-							datePickerState[0].endDate
+							datePickerState?.startDate,
+							datePickerState?.endDate
 						)
 					}
 				>

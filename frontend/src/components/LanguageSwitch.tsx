@@ -40,7 +40,6 @@ const LanguageSwitch = () => {
 				title={t('sk')}
 				country="SK"
 			/>
-			<Switch />
 		</Box>
 	);
 };

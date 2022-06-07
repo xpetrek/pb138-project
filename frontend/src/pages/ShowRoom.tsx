@@ -33,27 +33,11 @@ const ShowRoom = () => {
 		console.log(room);
 	}, []);
 
-	const handleRoomReservation = (from: Date, to: Date) => {
-		setLoading(true);
-		console.log('Reservation sent!');
-		reservationService
-			.create(
-				from.toISOString().split('T')[0],
-				to.toISOString().split('T')[0],
-				room.id,
-				session?.user.id ?? 1,
-				session?.token ?? ''
-			)
-			.then(response => response.json().then(res => console.log(res)))
-			.finally(() => setLoading(false));
-	};
-
 	return loading ? (
 		<>Loading!</>
 	) : (
 		<RoomReservation
 			room={room}
-			handleRoomReservation={handleRoomReservation}
 			hasOwnership={session?.user.id === room.ownerId}
 		/>
 	);

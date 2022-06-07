@@ -25,7 +25,7 @@ const RoomInfo = (room: RoomData) => {
 				{room.description}
 			</Typography>
 			<Typography gutterBottom variant="h6" component="div">
-				{room.pricePerDay},-CZK
+				{room.pricePerDay} CZK
 			</Typography>
 		</>
 	);

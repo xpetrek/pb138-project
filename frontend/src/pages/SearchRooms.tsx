@@ -62,7 +62,9 @@ const SearchRooms = () => {
 					))}
 				</TextField>
 			</Box>
-			{rooms !== undefined ? <RoomCardSearchResult rooms={rooms} /> : null}
+			{rooms !== undefined ? (
+				<RoomCardSearchResult rooms={rooms} setRooms={setRooms} />
+			) : null}
 		</>
 	);
 };

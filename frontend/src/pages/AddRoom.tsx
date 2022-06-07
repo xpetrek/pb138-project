@@ -6,10 +6,12 @@ import usePageTitle from '../hooks/usePageTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import roomService from '../hooks/roomService';
 import { LOCATIONS } from '../utils/constants';
+import useLoggedInUser from '../hooks/useLoggedInUser';
 
 const AddRoom = () => {
-	const t = useTranslation();
 	usePageTitle('Add room');
+	const t = useTranslation();
+	const { session, error, login, logout } = useLoggedInUser();
 
 	const [name, nameProps] = useField('name', true);
 	const [description, descriptionProps] = useField('description', true);
@@ -19,13 +21,15 @@ const AddRoom = () => {
 	const [imageLabel, imageLabelProps] = useField('image', true);
 
 	const handleAddRoom = () => {
+		if (!session) return;
 		roomService.create(
 			name,
 			description,
 			location,
 			Number.parseInt(ppd),
 			imageURL,
-			imageLabel
+			imageLabel,
+			session
 		);
 	};
 	return (
