@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import { PrismaClient } from '@prisma/client';
 
 import app from '../server';
+import { Decimal } from '@prisma/client/runtime';
 
 const request = supertest(app);
 const prisma = new PrismaClient();
@@ -43,8 +44,9 @@ describe('/reservations tests', () => {
 
 		const reservation = await prisma.reservation.create({
 			data: {
-				from: new Date('2020-09-10'),
+				from: new Date('2020-09-09'),
 				to: new Date('2020-09-10'),
+				price: room.pricePerDay.mul(1),
 				roomId: room.id,
 				userId
 			}
@@ -59,7 +61,7 @@ describe('/reservations tests', () => {
 	});
 
 	it('GET /reservations get all reservations without query params', async () => {
-		await request.get('/reservations').expect(400);
+		await request.get('/reservations').expect(200);
 	});
 
 	it('GET /reservations from is not a Date string', async () => {
@@ -79,7 +81,7 @@ describe('/reservations tests', () => {
 	it('GET /reservations valid query', async () => {
 		const response = await request
 			.get('/reservations')
-			.query({ roomId, from: '2020-09-10', to: '2020-09-10' })
+			.query({ roomId, from: '2020-09-09', to: '2020-09-10' })
 			.expect(200);
 		expect(response.body).toHaveLength(1);
 	});
@@ -165,7 +167,7 @@ describe('/reservations tests', () => {
 			.post('/reservations')
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
-				from: '2022-04-08',
+				from: '2022-05-07',
 				to: '2022-05-08',
 				roomId,
 				userId

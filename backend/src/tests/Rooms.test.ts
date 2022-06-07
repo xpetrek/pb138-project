@@ -42,8 +42,9 @@ describe('/rooms tests', () => {
 
 		await prisma.reservation.create({
 			data: {
-				from: new Date('2020-09-10'),
+				from: new Date('2020-09-09'),
 				to: new Date('2020-09-10'),
+				price: room.pricePerDay.mul(1),
 				roomId: room.id,
 				userId
 			}
