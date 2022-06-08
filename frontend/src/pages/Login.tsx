@@ -1,4 +1,4 @@
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import useField from '../hooks/useField';
@@ -13,7 +13,7 @@ const Login = () => {
 
 	const [email, emailProps] = useField('name', true);
 	const [password, passwordProps] = useField('name', true);
-	const { session, loading, error, login, logout } = useLoggedInUser();
+	const { login } = useLoggedInUser();
 
 	const handleLogin = () => {
 		login(email, password);
@@ -25,7 +25,7 @@ const Login = () => {
 			<TextField label={t('email')} {...emailProps} type="email" />
 			<TextField label={t('password')} {...passwordProps} type="password" />
 			<Button variant="contained" onClick={handleLogin}>
-				Login
+				{t('loginButtonText')}
 			</Button>
 		</Box>
 	);

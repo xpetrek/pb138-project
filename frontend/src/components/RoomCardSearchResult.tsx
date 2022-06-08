@@ -1,9 +1,8 @@
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import roomService from '../hooks/roomService';
 import useLoggedInUser from '../hooks/useLoggedInUser';
-import { useTranslation } from '../hooks/useTranslation';
 import { RoomData } from '../utils/types';
 
 import AddCard from './AddCard';
@@ -19,9 +18,8 @@ const RoomCardSearchResult = ({
 	isEditingPage = false,
 	setRooms
 }: Props) => {
-	const t = useTranslation();
 	const { session } = useLoggedInUser();
-	const [loading, setLoading] = useState<boolean>(true);
+	const [, setLoading] = useState<boolean>(true);
 
 	const handleDelete = (id: number, index: number) => {
 		setLoading(true);

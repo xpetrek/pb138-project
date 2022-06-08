@@ -1,17 +1,24 @@
-import { Box, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
+import { useTranslation } from '../hooks/useTranslation';
 type Props = {
 	language: string;
 };
 
 const Home = ({ language }: Props) => {
-	const tmp = '';
+	const t = useTranslation();
 	return (
-		<Typography variant="h1" fontWeight="bolder">
-			Looking for saving some buck and renting room from locals? Are you living
-			in Brno and want to cut the middle man and share
-		</Typography>
+		<>
+			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+				{t('introductionFirstLine')}
+			</Typography>
+			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+				{t('introductionSecondLine')}
+			</Typography>
+			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+				{t('introductionThirdLine')}
+			</Typography>
+		</>
 	);
 };
 

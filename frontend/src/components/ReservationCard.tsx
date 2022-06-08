@@ -5,13 +5,11 @@ import {
 	CardContent,
 	CardMedia,
 	Typography,
-	Grid,
 	Button
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import reservationService from '../hooks/reservationService';
 import { useLanguage, useTranslation } from '../hooks/useTranslation';
 import { ReservationData } from '../utils/types';
 

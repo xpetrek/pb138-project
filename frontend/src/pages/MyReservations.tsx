@@ -1,14 +1,13 @@
-import { id } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 
 import ReservationCardSearchResult from '../components/ReservationCardSearchResult';
 import reservationService from '../hooks/reservationService';
 import useLoggedInUser from '../hooks/useLoggedInUser';
-import { RoomData, ReservationData } from '../utils/types';
+import { ReservationData } from '../utils/types';
 
 const MyReservations = () => {
-	const { session, error, login, logout } = useLoggedInUser();
-	const [loading, setLoading] = useState<boolean>(true);
+	const { session } = useLoggedInUser();
+	const [, setLoading] = useState<boolean>(true);
 	const [reservations, setReservations] = useState<ReservationData[]>([]);
 
 	useEffect(() => {

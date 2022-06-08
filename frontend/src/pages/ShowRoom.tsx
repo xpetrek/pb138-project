@@ -5,12 +5,11 @@ import { RoomData } from '../utils/types';
 import usePageTitle from '../hooks/usePageTitle';
 import roomService from '../hooks/roomService';
 import RoomReservation from '../components/RoomReservation';
-import reservationService from '../hooks/reservationService';
 import useLoggedInUser from '../hooks/useLoggedInUser';
 
 const ShowRoom = () => {
 	usePageTitle('Room');
-	const { session, error, login, logout } = useLoggedInUser();
+	const { session } = useLoggedInUser();
 
 	const { id } = useParams();
 	const [room, setRoom] = useState<RoomData>({

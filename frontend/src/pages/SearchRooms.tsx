@@ -1,15 +1,12 @@
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRangePicker, RangeKeyDict } from 'react-date-range';
 import { Box, TextField, Button, MenuItem } from '@mui/material';
-import { addDays, startOfDay, subDays } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import RoomCardSearchResult from '../components/RoomCardSearchResult';
 import useField from '../hooks/useField';
 import { useTranslation } from '../hooks/useTranslation';
 import usePageTitle from '../hooks/usePageTitle';
-import reservationService from '../hooks/reservationService';
 import roomService from '../hooks/roomService';
 import { Order, RoomData } from '../utils/types';
 import { LOCATIONS, ORDER_BY } from '../utils/constants';

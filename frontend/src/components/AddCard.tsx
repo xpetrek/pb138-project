@@ -1,12 +1,9 @@
 import {
-	Box,
 	Card,
 	CardActionArea,
 	CardContent,
 	CardMedia,
-	Typography,
-	Grid,
-	Button
+	Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +11,7 @@ import { useTranslation } from '../hooks/useTranslation';
 
 const AddCard = () => {
 	const navigate = useNavigate();
+	const t = useTranslation();
 
 	return (
 		<Card>
@@ -25,7 +23,7 @@ const AddCard = () => {
 				/>
 				<CardContent>
 					<Typography gutterBottom variant="h4" component="div">
-						Add room
+						{t('addRoom')}
 					</Typography>
 				</CardContent>
 			</CardActionArea>

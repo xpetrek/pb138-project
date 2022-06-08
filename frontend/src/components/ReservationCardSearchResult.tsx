@@ -1,12 +1,10 @@
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import reservationService from '../hooks/reservationService';
 import useLoggedInUser from '../hooks/useLoggedInUser';
-import { useTranslation } from '../hooks/useTranslation';
 import { ReservationData } from '../utils/types';
 
-import AddCard from './AddCard';
 import ReservationCard from './ReservationCard';
 
 type Props = {
@@ -14,9 +12,8 @@ type Props = {
 	setReservations: Dispatch<SetStateAction<ReservationData[]>>;
 };
 const RoomCardSearchResult = ({ reservations, setReservations }: Props) => {
-	const t = useTranslation();
 	const { session } = useLoggedInUser();
-	const [loading, setLoading] = useState<boolean>(true);
+	const [, setLoading] = useState<boolean>(true);
 
 	const handleDelete = (id: number, index: number) => {
 		setLoading(true);

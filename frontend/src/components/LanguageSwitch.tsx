@@ -1,4 +1,4 @@
-import { Box, IconButton, Switch } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Flag from 'react-flagkit';
 
 import { useLanguage, useTranslation } from '../hooks/useTranslation';

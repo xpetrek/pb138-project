@@ -5,15 +5,11 @@ import {
 	CardContent,
 	CardMedia,
 	Typography,
-	Grid,
-	makeStyles,
-	Button,
-	CardHeader
+	Button
 } from '@mui/material';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useTranslation } from '../hooks/useTranslation';
 import { RoomData } from '../utils/types';
 
 type Props = {

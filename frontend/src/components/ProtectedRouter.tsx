@@ -1,11 +1,5 @@
 import { FC } from 'react';
-import {
-	Routes,
-	Route,
-	NavLink,
-	Navigate,
-	useNavigate
-} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import useLoggedInUser from '../hooks/useLoggedInUser';
 

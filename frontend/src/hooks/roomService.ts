@@ -1,8 +1,6 @@
 import { BACKEND_URL } from '../utils/constants';
 import { SessionData } from '../utils/types';
 
-import useLoggedInUser from './useLoggedInUser';
-
 const getUrlParams = (
 	from?: string,
 	to?: string,

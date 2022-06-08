@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Button, Box } from '@mui/material';
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 const Layout: FC<Props> = ({ children }) => {
-	const { session, error, login, logout } = useLoggedInUser();
+	const { session, logout } = useLoggedInUser();
 	const t = useTranslation();
 	const navigate = useNavigate();
 
@@ -22,28 +22,28 @@ const Layout: FC<Props> = ({ children }) => {
 				<Container maxWidth="lg">
 					<Toolbar disableGutters sx={{ gap: 2 }}>
 						<Button color="secondary" component={Link} to="/">
-							Home
+							{t('home')}
 						</Button>
 						<Button color="secondary" component={Link} to="/addRoom">
-							AddRoom
+							{t('addRoom')}
 						</Button>
 						<Button color="secondary" component={Link} to="/searchRooms">
-							SearchRooms
+							{t('searchRooms')}
 						</Button>
 						<Button color="secondary" component={Link} to="/myRooms">
-							MyRooms
+							{t('myRooms')}
 						</Button>
 						<Button color="secondary" component={Link} to="/myReservations">
-							MyReservations
+							{t('myReservations')}
 						</Button>
 						<Box sx={{ flexGrow: 1 }} />
 						{!session?.token ? (
 							<>
 								<Button color="secondary" component={Link} to="/login">
-									Login
+									{t('login')}
 								</Button>
 								<Button color="secondary" component={Link} to="/signUp">
-									SignUp
+									{t('signUp')}
 								</Button>
 							</>
 						) : (
@@ -54,7 +54,7 @@ const Layout: FC<Props> = ({ children }) => {
 									navigate('/');
 								}}
 							>
-								Logout
+								{t('logout')}
 							</Button>
 						)}
 						<LanguageSwitch />

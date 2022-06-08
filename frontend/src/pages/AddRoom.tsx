@@ -1,5 +1,4 @@
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Box, Button, MenuItem, TextField } from '@mui/material';
 
 import useField from '../hooks/useField';
 import usePageTitle from '../hooks/usePageTitle';
@@ -11,7 +10,7 @@ import useLoggedInUser from '../hooks/useLoggedInUser';
 const AddRoom = () => {
 	usePageTitle('Add room');
 	const t = useTranslation();
-	const { session, error, login, logout } = useLoggedInUser();
+	const { session } = useLoggedInUser();
 
 	const [name, nameProps] = useField('name', true);
 	const [description, descriptionProps] = useField('description', true);
@@ -58,8 +57,8 @@ const AddRoom = () => {
 				</div>
 
 				<div>
-					<TextField label="Image URL" {...imageURLProps} type="text" />
-					<TextField label="Image label" {...imageLabelProps} />
+					<TextField label={t('imageUrl')} {...imageURLProps} type="text" />
+					<TextField label={t('imageLabel')} {...imageLabelProps} />
 				</div>
 				<Box
 					sx={{

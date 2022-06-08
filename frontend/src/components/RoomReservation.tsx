@@ -14,13 +14,13 @@ type Props = {
 	hasOwnership?: boolean;
 };
 const RoomReservation = ({ room, hasOwnership = true }: Props) => {
-	const { session, error, login, logout } = useLoggedInUser();
+	const { session } = useLoggedInUser();
 
 	const [nonUserReservationDates, setNonUserReservationDates] = useState<
 		Range[]
 	>([]);
 	const [userReservationDates, setUserReservationDates] = useState<Range[]>([]);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [, setLoading] = useState<boolean>(true);
 	const [errorMessage, setErrorMessage] = useState<string>();
 
 	useEffect(() => {
