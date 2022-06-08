@@ -29,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" && prettier \"./src/**/*.{ts,tsx}\" --chek",
-    "flint": "eslint \"./src/**/*.{ts,tsx}\" && prettier \"./src/**/*.{ts,tsx}\" --fix",
+    "flint": "eslint \"./src/**/*.{ts,tsx}\" --fix && prettier \"./src/**/*.{ts,tsx}\" --write",
     "fix": "prettier src/react-app-env.d.ts --write",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

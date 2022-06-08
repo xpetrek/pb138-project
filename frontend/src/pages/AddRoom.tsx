@@ -35,18 +35,32 @@ const AddRoom = () => {
 	return (
 		<>
 			<Box>
-				<TextField label={t('name')} {...nameProps} type="email" />
-				<TextField label={t('description')} {...descriptionProps} type="text" />
-				<TextField label={t('location')} {...locationProps} select type="text">
-					{LOCATIONS.map((location: string, i: number) => (
-						<MenuItem key={i} value={location}>
-							{location}
-						</MenuItem>
-					))}
-				</TextField>
-				<TextField label={t('ppd')} {...ppdProps} type="number" />
-				<TextField label="Image URL" {...imageURLProps} type="text" />
-				<TextField label="Image label" {...imageLabelProps} />
+				<div>
+					<TextField label={t('name')} {...nameProps} type="email" />
+					<TextField
+						label={t('description')}
+						{...descriptionProps}
+						type="text"
+					/>
+					<TextField
+						label={t('location')}
+						{...locationProps}
+						select
+						type="text"
+					>
+						{LOCATIONS.map((location: string, i: number) => (
+							<MenuItem key={i} value={location}>
+								{location}
+							</MenuItem>
+						))}
+					</TextField>
+					<TextField label={t('ppd')} {...ppdProps} type="number" />
+				</div>
+
+				<div>
+					<TextField label="Image URL" {...imageURLProps} type="text" />
+					<TextField label="Image label" {...imageLabelProps} />
+				</div>
 				<Box
 					sx={{
 						height: '50%',
