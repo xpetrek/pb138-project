@@ -1,23 +1,17 @@
-import { FC } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import useLoggedInUser from '../hooks/useLoggedInUser';
 
 type Props = {
-	children?: React.ReactNode;
-	path: string;
+	children?: JSX.Element;
+	redirectPath?: string;
 };
 
-const ProtectedRoute: FC<Props> = ({ children, path }) => {
+const ProtectedRoute = ({ children, redirectPath }: Props) => {
 	const { session } = useLoggedInUser();
-
-	return (
-		<Routes>
-			<Route path={path}>
-				{session?.token ? children : <Navigate to="/home" replace />}
-			</Route>
-		</Routes>
-	);
+	if (session?.token)
+		return children ?? <Navigate to={redirectPath ?? '/'} replace />;
+	return <Navigate to={redirectPath ?? '/'} replace />;
 };
 
 export default ProtectedRoute;

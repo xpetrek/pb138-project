@@ -17,13 +17,31 @@ const CustomRouter = () => (
 		<Route path="/" element={<Home language="en" />} />
 		<Route path="/login" element={<Login />} />
 		<Route path="/signUp" element={<SignUp />} />
-		<Route path="/addRoom" element={<AddRoom />} />
+		<Route
+			path="/addRoom"
+			element={
+				<ProtectedRoute>
+					<AddRoom />
+				</ProtectedRoute>
+			}
+		/>
 		<Route path="/searchRooms" element={<SearchRooms />} />
-		<Route path="/myRooms" element={<MyRooms />} />
-		<Route path="/myReservations" element={<MyReservations />} />
-		{/* <ProtectedRoute path="/rooms/:id">
-			<ShowRoom />
-		</ProtectedRoute> */}
+		<Route
+			path="/myRooms"
+			element={
+				<ProtectedRoute>
+					<MyRooms />
+				</ProtectedRoute>
+			}
+		/>
+		<Route
+			path="/myReservations"
+			element={
+				<ProtectedRoute>
+					<MyReservations />
+				</ProtectedRoute>
+			}
+		/>
 		<Route path="/rooms/:id" element={<ShowRoom />} />
 		<Route path="/*" element={<NotFound />} />
 	</Routes>
