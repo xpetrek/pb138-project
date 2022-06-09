@@ -30,11 +30,6 @@ export const UserProvider: FC<Props> = ({ children }) => {
 	const [error, setError] = useState<Error>();
 	const [loading, setLoading] = useState<boolean>(true);
 
-	useEffect(() => {
-		console.log('session after loading change');
-		console.log(session);
-	}, [session]);
-
 	const signUp = (name: string, email: string, password: string) => {
 		setLoading(true);
 		fetch(`${BACKEND_URL}/signup`, {
@@ -58,20 +53,23 @@ export const UserProvider: FC<Props> = ({ children }) => {
 				'Content-Type': 'application/json'
 			}
 		})
-			.then(response => {
+			.then(async response => {
 				response.json().then(res => {
-					const copy: SessionData = {
-						user: res.user,
-						token: res.accessToken
-					};
-					setSession(copy);
-					console.log('copy');
-					console.log(copy);
-					console.log(session);
+					if (response.ok) {
+						const copy: SessionData = {
+							user: res.user,
+							token: res.accessToken
+						};
+						setSession(copy);
+					} else {
+						setError(new Error(res.message));
+					}
 				});
 			})
 			.catch(err => setError(err))
-			.finally(() => setLoading(false));
+			.finally(() => {
+				setLoading(false);
+			});
 	};
 
 	const logout = () => {

@@ -40,5 +40,13 @@ export default {
 	priceAsc: 'price (ascending)',
 	priceDesc: 'price (descending)',
 	locationAsc: 'location (ascending)',
-	locationDesc: 'location (descending)'
+	locationDesc: 'location (descending)',
+	welcome: 'Welcome',
+	invalidEmail: 'Invalid email!',
+	passwordShort: 'Password too short! (Under 8 characters)',
+	passwordLong: 'Password too long! (Over 16 characters)',
+	invalidName: 'Invalid name!',
+	nameShort: 'Name too short! (Under 3 characters)',
+	nameLong: 'Name too long! (Over 15 characters)',
+	title: 'Airbnb rooms'
 };

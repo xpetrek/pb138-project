@@ -9,6 +9,9 @@ const Home = ({ language }: Props) => {
 	const t = useTranslation();
 	return (
 		<>
+			<Typography variant="h1" fontWeight="bolder" fontSize="2rem">
+				{t('title')}
+			</Typography>
 			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
 				{t('introductionFirstLine')}
 			</Typography>

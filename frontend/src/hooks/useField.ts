@@ -1,14 +1,46 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { useTranslation } from './useTranslation';
 
-const useField = (id: string, required?: boolean) => {
+const useField = (id: string, required?: boolean, validateOn?: string) => {
 	const t = useTranslation();
 
 	const [value, setValue] = useState('');
 	const [touched, setTouched] = useState(false);
+	const [errMessage, setErrMessage] = useState('');
 
-	const error = required && touched && !value;
+	useEffect(() => {
+		validation();
+	}, [value]);
+
+	const isEmailValid = () => {
+		const pattern = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+		setErrMessage('');
+		if (!pattern.test(value)) setErrMessage(t('invalidEmail'));
+	};
+
+	const isPasswordValid = () => {
+		setErrMessage('');
+		if (value.length < 8) setErrMessage(t('passwordShort'));
+		else if (value.length > 16) setErrMessage(t('passwordLong'));
+	};
+
+	const isNameValid = () => {
+		const pattern = new RegExp('^[A-Za-z]+$');
+		setErrMessage('');
+		if (!pattern.test(value)) setErrMessage(t('invalidName'));
+		else if (value.length < 3) setErrMessage(t('nameShort'));
+		else if (value.length > 15) setErrMessage(t('nameLong'));
+	};
+
+	const validation = () => {
+		if (validateOn === undefined) return;
+		if (validateOn === 'name') isNameValid();
+		if (validateOn === 'email') isEmailValid();
+		if (validateOn === 'password') isPasswordValid();
+	};
+
+	const error = required && touched && (!value || errMessage !== '');
 
 	return [
 		// Current value for convenient access
@@ -22,10 +54,16 @@ const useField = (id: string, required?: boolean) => {
 					setValue(e.target.value),
 				[]
 			),
-			onBlur: useCallback(() => setTouched(true), []),
+			onBlur: useCallback(() => {
+				setTouched(true);
+			}, []),
 			required,
 			error,
-			helperText: error ? t('required') : undefined
+			helperText: error
+				? value.length > 0
+					? errMessage
+					: t('required')
+				: undefined
 		}
 	] as const;
 };
