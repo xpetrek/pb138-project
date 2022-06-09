@@ -47,5 +47,6 @@ export default {
 	passwordLong: 'Password too long! (Over 16 characters)',
 	invalidName: 'Invalid name!',
 	nameShort: 'Name too short! (Under 3 characters)',
-	nameLong: 'Name too long! (Over 15 characters)'
+	nameLong: 'Name too long! (Over 15 characters)',
+	title: 'Airbnb rooms'
 };

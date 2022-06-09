@@ -31,9 +31,6 @@ const Layout: FC<Props> = ({ children }) => {
 						<Button color="secondary" component={Link} to="/">
 							{t('home')}
 						</Button>
-						<Button color="secondary" component={Link} to="/addRoom">
-							{t('addRoom')}
-						</Button>
 						<Button color="secondary" component={Link} to="/searchRooms">
 							{t('searchRooms')}
 						</Button>
