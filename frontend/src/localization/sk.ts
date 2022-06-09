@@ -40,5 +40,11 @@ export default {
 	priceDesc: 'cena (zostupne)',
 	locationAsc: 'lokácia (vzostupne)',
 	locationDesc: 'lokácia (zostupne)',
-	welcome: 'Vitaj'
+	welcome: 'Vitaj', 
+	invalidEmail: 'Neplatný email!',
+	passwordShort: 'Heslo je príliš krátke! (Menej ako 8 znakov)',
+	passwordLong: 'Heslo je príliš krátke! (Viac ako 16 znakov)',
+	invalidName: 'Neplatné meno!',
+	nameShort: 'Meno je príliš krátke! (Menej ako 3 znaky)',
+	nameLong: 'Meno je príliš dlhé! (Viac ako 15 znakov)'
 };

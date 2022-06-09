@@ -16,21 +16,21 @@ const useField = (id: string, required?: boolean, validateOn?: string) => {
 	const isEmailValid = () => {
 		const pattern = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
 		setErrMessage('');
-		if (!pattern.test(value)) setErrMessage('Invalid email');
+		if (!pattern.test(value)) setErrMessage(t('invalidEmail'));
 	};
 
 	const isPasswordValid = () => {
 		setErrMessage('');
-		if (value.length < 8) setErrMessage('Password too short!');
-		else if (value.length > 16) setErrMessage('Password too long!');
+		if (value.length < 8) setErrMessage(t('passwordShort'));
+		else if (value.length > 16) setErrMessage(t('passwordLong'));
 	};
 
 	const isNameValid = () => {
 		const pattern = new RegExp('^[A-Za-z]+$');
 		setErrMessage('');
-		if (!pattern.test(value)) setErrMessage('Invalid name');
-		else if (value.length < 3) setErrMessage('Name too short!');
-		else if (value.length > 15) setErrMessage('Name too long!');
+		if (!pattern.test(value)) setErrMessage(t('invalidName'));
+		else if (value.length < 3) setErrMessage(t('nameShort'));
+		else if (value.length > 15) setErrMessage(t('nameLong'));
 	};
 
 	const validation = () => {
