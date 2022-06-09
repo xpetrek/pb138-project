@@ -39,5 +39,6 @@ export default {
 	priceAsc: 'cena (vzostupne)',
 	priceDesc: 'cena (zostupne)',
 	locationAsc: 'lokácia (vzostupne)',
-	locationDesc: 'lokácia (zostupne)'
+	locationDesc: 'lokácia (zostupne)',
+	welcome: 'Vitaj'
 };

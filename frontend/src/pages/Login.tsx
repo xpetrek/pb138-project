@@ -13,10 +13,12 @@ const Login = () => {
 
 	const [email, emailProps] = useField('name', true);
 	const [password, passwordProps] = useField('name', true);
-	const { login } = useLoggedInUser();
+	const { login, error, session } = useLoggedInUser();
 
 	const handleLogin = () => {
 		login(email, password);
+		console.log(session);
+		if (error !== undefined) return;
 		navigate('/searchRooms');
 	};
 

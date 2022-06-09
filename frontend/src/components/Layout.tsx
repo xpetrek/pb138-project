@@ -1,6 +1,13 @@
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AppBar, Container, Toolbar, Button, Box } from '@mui/material';
+import {
+	AppBar,
+	Container,
+	Toolbar,
+	Button,
+	Box,
+	Typography
+} from '@mui/material';
 
 // import useLoggedInUser from '../../hooks/useLoggedInUser';
 import { useTranslation } from '../hooks/useTranslation';
@@ -47,15 +54,20 @@ const Layout: FC<Props> = ({ children }) => {
 								</Button>
 							</>
 						) : (
-							<Button
-								color="secondary"
-								onClick={() => {
-									logout();
-									navigate('/');
-								}}
-							>
-								{t('logout')}
-							</Button>
+							<>
+								<Typography>
+									{t('welcome')} {session.user.name}!
+								</Typography>
+								<Button
+									color="secondary"
+									onClick={() => {
+										logout();
+										navigate('/');
+									}}
+								>
+									{t('logout')}
+								</Button>
+							</>
 						)}
 						<LanguageSwitch />
 					</Toolbar>

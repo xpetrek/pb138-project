@@ -40,5 +40,6 @@ export default {
 	priceAsc: 'price (ascending)',
 	priceDesc: 'price (descending)',
 	locationAsc: 'location (ascending)',
-	locationDesc: 'location (descending)'
+	locationDesc: 'location (descending)',
+	welcome: 'Welcome'
 };

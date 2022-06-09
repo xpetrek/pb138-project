@@ -56,7 +56,6 @@ const RoomReservation = ({ room, hasOwnership = true }: Props) => {
 			)
 			.then(async response => {
 				if (response.status !== 201) {
-					console.log('!201');
 					response.json().then(res => {
 						console.log(res);
 						setErrorMessage(res);
