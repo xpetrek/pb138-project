@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { useLanguage, useTranslation } from '../hooks/useTranslation';
 import { ReservationData } from '../utils/types';
@@ -30,6 +31,7 @@ const ReservationCard = ({ reservation, index, handleDelete }: Props) => {
 		<Card
 			onMouseOver={() => setFocused(true)}
 			onMouseLeave={() => setFocused(false)}
+			sx={{ display: 'grid', width: '100%', objectFit: 'scale-down' }}
 		>
 			<CardActionArea onClick={() => navigate(`/rooms/${reservation.roomId}`)}>
 				<Box
@@ -44,13 +46,14 @@ const ReservationCard = ({ reservation, index, handleDelete }: Props) => {
 						variant="contained"
 						onClick={() => handleDelete(reservation.id, index)}
 					>
-						Delete
+						<ClearIcon />
 					</Button>
 				</Box>
 				<CardMedia
+					className="reservation-card--picture"
 					component="img"
 					image={
-						reservation.room.pictures.length !== 0
+						reservation.room.pictures[0].url !== ''
 							? reservation.room.pictures[0].url
 							: '/room.png'
 					}

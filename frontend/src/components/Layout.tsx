@@ -35,12 +35,16 @@ const Layout: FC<Props> = ({ children }) => {
 						<Button color="secondary" component={Link} to="/searchRooms">
 							{t('searchRooms')}
 						</Button>
-						<Button color="secondary" component={Link} to="/myRooms">
-							{t('myRooms')}
-						</Button>
-						<Button color="secondary" component={Link} to="/myReservations">
-							{t('myReservations')}
-						</Button>
+						{session?.token ? (
+							<>
+								<Button color="secondary" component={Link} to="/myRooms">
+									{t('myRooms')}
+								</Button>
+								<Button color="secondary" component={Link} to="/myReservations">
+									{t('myReservations')}
+								</Button>
+							</>
+						) : null}
 						<Box sx={{ flexGrow: 1 }} />
 						{!session?.token ? (
 							<>

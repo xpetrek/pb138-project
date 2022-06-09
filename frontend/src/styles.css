@@ -1,17 +1,65 @@
+.add-card--plus-icon {
+	height: fit-content;
+	width: fit-content;
+}
+
+.add-card--picture {
+	height: 14rem;
+	object-fit: scale-down;
+}
+
+.add-room--locaiton {
+	width: 20%;
+}
+
+.room-card--picture {
+	height: 14rem;
+	object-fit: scale-down;
+}
+
+.reservation-card--picture {
+	height: 14rem;
+	object-fit: scale-down;
+}
+
 .home--title {
-    text-align: center;
+	text-align: center;
 }
 
 .home--line {
-    padding-bottom: 1.5rem;
+	padding-bottom: 1.5rem;
 }
 
-.login--box, .signup--box {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+.login--box,
+.signup--box {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	padding-bottom: 1rem;
 }
 
-.login--button, .signup--button {
-    height: 3.3rem;
+.login--button,
+.signup--button {
+	height: 3.3rem;
+}
+
+.login--failed-message {
+	display: flex;
+	justify-content: center;
+	color: red;
+	font-size: 3.5rem;
+}
+
+.search--location-field,
+.search--orderBy-field {
+	width: 20%;
+}
+
+.search--filters {
+	display: flex;
+	justify-content: space-between;
+}
+
+.rdrDefinedRangesWrapper {
+	display: none;
 }

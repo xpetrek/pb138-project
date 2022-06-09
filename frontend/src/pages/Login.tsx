@@ -22,16 +22,6 @@ const Login = () => {
 		navigate('/searchRooms');
 	};
 
-	const isLoginValid = () => {
-		const pattern = new RegExp(
-			/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-		);
-		if (!pattern.test(email)) {
-			return false;
-		}
-		return true;
-	};
-
 	return (
 		<Box className="login--box">
 			<TextField label={t('email')} {...emailProps} type="email" />
@@ -44,6 +34,11 @@ const Login = () => {
 				{t('loginButtonText')}
 			</Button>
 		</Box>
+		// {loginFailed ? (
+		// 	<Typography fontSize="1.5rem" className="login--failed-message">
+		// 		{t('loginFailed')}
+		// 	</Typography>
+		// ) : null}
 	);
 };
 

@@ -11,7 +11,7 @@ const useField = (id: string, required?: boolean, validateOn?: string) => {
 
 	useEffect(() => {
 		validation();
-	}, [value]);
+	}, [value, t]);
 
 	const isEmailValid = () => {
 		const pattern = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');

@@ -3,6 +3,8 @@ import { subDays, addDays } from 'date-fns';
 import { useState } from 'react';
 import { DateRangePicker, RangeKeyDict, Range } from 'react-date-range';
 
+import { useTranslation } from '../hooks/useTranslation';
+
 type Props = {
 	price: number;
 	userReservationDates: Range[];
@@ -15,6 +17,8 @@ const DatePicker = ({
 	nonUserReservationDates,
 	handleRoomReservation
 }: Props) => {
+	const t = useTranslation();
+
 	const [numberOfNights, setNumberOfNights] = useState<number>(0);
 	const [datePickerState, setDatePickerState] = useState({
 		startDate: subDays(new Date(), 0),
@@ -46,8 +50,8 @@ const DatePicker = ({
 	};
 
 	return (
-		<Grid container direction="column">
-			<Grid item>
+		<Grid container direction="column" justifyContent="center">
+			<Grid item display="flex" justifyContent="center">
 				<DateRangePicker
 					staticRanges={[]}
 					inputRanges={[]}
@@ -61,13 +65,12 @@ const DatePicker = ({
 					direction="vertical"
 				/>
 			</Grid>
-			<Grid item>
-				<Typography>
-					{price} * {numberOfNights} = {price * numberOfNights}
-				</Typography>
+			<Grid item display="flex" justifyContent="center">
+				<Typography>{price * numberOfNights},- CZK</Typography>
 			</Grid>
-			<Grid item>
+			<Grid item display="flex" justifyContent="center">
 				<Button
+					variant="contained"
 					onClick={() =>
 						handleRoomReservation(
 							datePickerState?.startDate,
@@ -75,7 +78,7 @@ const DatePicker = ({
 						)
 					}
 				>
-					Submit
+					{t('submit')}
 				</Button>
 			</Grid>
 		</Grid>

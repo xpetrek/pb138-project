@@ -4,7 +4,6 @@ import useField from '../hooks/useField';
 import usePageTitle from '../hooks/usePageTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import roomService from '../hooks/roomService';
-import { LOCATIONS } from '../utils/constants';
 import useLoggedInUser from '../hooks/useLoggedInUser';
 
 const AddRoom = () => {
@@ -31,6 +30,9 @@ const AddRoom = () => {
 			session
 		);
 	};
+
+	const LOCATIONS = [' ', t('brno'), t('prague')];
+
 	return (
 		<>
 			<Box>
@@ -42,6 +44,7 @@ const AddRoom = () => {
 						type="text"
 					/>
 					<TextField
+						className="add-room--locaiton"
 						label={t('location')}
 						{...locationProps}
 						select
@@ -60,17 +63,21 @@ const AddRoom = () => {
 					<TextField label={t('imageUrl')} {...imageURLProps} type="text" />
 					<TextField label={t('imageLabel')} {...imageLabelProps} />
 				</div>
-				<Box
-					sx={{
-						height: '50%',
-						width: '50%'
-					}}
-					component="img"
-					alt="Bad photo"
-					src={imageURL}
-				/>
+				{imageURL ? (
+					<Box
+						sx={{
+							height: '50%',
+							width: '50%'
+						}}
+						component="img"
+						alt="Bad photo"
+						src={imageURL}
+					/>
+				) : null}
 			</Box>
-			<Button onClick={handleAddRoom}>{t('submit')}</Button>
+			<Button variant="contained" onClick={handleAddRoom}>
+				{t('submit')}
+			</Button>
 		</>
 	);
 };

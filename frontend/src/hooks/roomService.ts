@@ -8,7 +8,7 @@ const getUrlParams = (
 	ownerId?: number
 ) => {
 	let url = '';
-	if (ownerId !== undefined) url.concat(`ownerId=${ownerId}&`);
+	if (ownerId !== undefined) url = url.concat(`ownerId=${ownerId}&`);
 	if (from !== undefined && from.length > 0) url = url.concat(`from=${from}&`);
 	if (to !== undefined && to.length > 0) url = url.concat(`to=${to}&`);
 	if (location !== undefined && location.length > 0)

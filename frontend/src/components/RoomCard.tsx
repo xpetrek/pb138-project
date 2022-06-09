@@ -7,6 +7,7 @@ import {
 	Typography,
 	Button
 } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,11 +23,12 @@ type Props = {
 const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 	const navigate = useNavigate();
 	const [focused, setFocused] = useState<boolean>(false);
-
+	console.log(room.pictures);
 	return (
 		<Card
 			onMouseOver={() => setFocused(true)}
 			onMouseLeave={() => setFocused(false)}
+			sx={{ display: 'grid', width: '100%', objectFit: 'scale-down' }}
 		>
 			<Box
 				display="flex"
@@ -41,7 +43,7 @@ const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 						variant="contained"
 						onClick={() => handleDelete(room.id, index)}
 					>
-						Delete
+						<ClearIcon />
 					</Button>
 				) : null}
 			</Box>
@@ -53,7 +55,7 @@ const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 					className="room-card--picture"
 					component="img"
 					image={
-						room.pictures.length !== 0 ? room.pictures[0].url : '/room.png'
+						room.pictures[0].url !== '' ? room.pictures[0].url : '/room.png'
 					}
 				/>
 				<CardContent>

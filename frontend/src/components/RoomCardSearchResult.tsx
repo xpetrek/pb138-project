@@ -39,7 +39,15 @@ const RoomCardSearchResult = ({
 			sx={{ aspectRatio: 1 / 1 }}
 		>
 			{isEditingPage ? (
-				<Grid item xs={12} sm={6} md={4} lg={3} display="flex">
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={4}
+					lg={3}
+					display="flex"
+					alignContent="center"
+				>
 					<AddCard />
 				</Grid>
 			) : null}

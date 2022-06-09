@@ -48,5 +48,7 @@ export default {
 	invalidName: 'Invalid name!',
 	nameShort: 'Name too short! (Under 3 characters)',
 	nameLong: 'Name too long! (Over 15 characters)',
-	title: 'Airbnb rooms'
+	title: 'Airbnb rooms',
+	loginFailed: 'Login failed!',
+	signUpFailed: 'Sign up failed!'
 };

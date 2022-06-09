@@ -7,10 +7,11 @@ const getUrlParams = (
 	to?: string
 ) => {
 	let url = '';
-	if (roomId !== undefined) url.concat(`roomId=${roomId}&`);
-	if (userId !== undefined) url.concat(`userId=${userId}&`);
+	if (roomId !== undefined) url = url.concat(`roomId=${roomId}&`);
+	if (userId !== undefined) url = url.concat(`userId=${userId}&`);
 	if (from !== undefined && from.length > 0) url = url.concat(`from=${from}&`);
 	if (to !== undefined && to.length > 0) url = url.concat(`to=${to}&`);
+	console.log(url);
 	return url;
 };
 

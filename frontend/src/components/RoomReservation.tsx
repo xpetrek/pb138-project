@@ -26,9 +26,10 @@ const RoomReservation = ({ room, hasOwnership = true }: Props) => {
 	useEffect(() => {
 		setLoading(true);
 		reservationService
-			.get(undefined, room.id, undefined, undefined)
+			.get(room.id, undefined, undefined, undefined)
 			.then(response =>
 				response.json().then(res => {
+					console.log(res);
 					const reservationData = [...res];
 					setNonUserReservationDates(
 						transformNonUserReservationDatesForCalendar(reservationData)

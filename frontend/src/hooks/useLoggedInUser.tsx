@@ -62,6 +62,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
 						};
 						setSession(copy);
 					} else {
+						setSession(undefined);
 						setError(new Error(res.message));
 					}
 				});
@@ -73,8 +74,6 @@ export const UserProvider: FC<Props> = ({ children }) => {
 	};
 
 	const logout = () => {
-		console.log('logout!');
-		console.log(session);
 		setSession(undefined);
 	};
 
