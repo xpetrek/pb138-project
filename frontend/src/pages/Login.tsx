@@ -33,10 +33,14 @@ const Login = () => {
 	};
 
 	return (
-		<Box>
+		<Box className="login--box">
 			<TextField label={t('email')} {...emailProps} type="email" />
 			<TextField label={t('password')} {...passwordProps} type="password" />
-			<Button variant="contained" onClick={handleLogin}>
+			<Button
+				className="login--button"
+				variant="contained"
+				onClick={handleLogin}
+			>
 				{t('loginButtonText')}
 			</Button>
 		</Box>

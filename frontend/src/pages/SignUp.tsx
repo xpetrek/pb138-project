@@ -23,11 +23,15 @@ const SignUp = () => {
 	};
 
 	return (
-		<Box>
+		<Box className="signup--box">
 			<TextField label={t('name')} {...nameProps} type="text" />
 			<TextField label={t('email')} {...emailProps} type="email" />
 			<TextField label={t('password')} {...passwordProps} type="password" />
-			<Button variant="contained" onClick={handleSignUp}>
+			<Button
+				className="signup--button"
+				variant="contained"
+				onClick={handleSignUp}
+			>
 				{t('signUpButtonText')}
 			</Button>
 		</Box>

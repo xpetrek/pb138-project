@@ -9,16 +9,37 @@ const Home = ({ language }: Props) => {
 	const t = useTranslation();
 	return (
 		<>
-			<Typography variant="h1" fontWeight="bolder" fontSize="2rem">
+			<Typography
+				className="home--title"
+				variant="h1"
+				fontWeight="bolder"
+				fontSize="2.5rem"
+			>
 				{t('title')}
 			</Typography>
-			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+			<hr />
+			<Typography
+				className="home--line"
+				variant="h2"
+				fontWeight="bolder"
+				fontSize="2rem"
+			>
 				{t('introductionFirstLine')}
 			</Typography>
-			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+			<Typography
+				className="home--line"
+				variant="h2"
+				fontWeight="bolder"
+				fontSize="2rem"
+			>
 				{t('introductionSecondLine')}
 			</Typography>
-			<Typography variant="h2" fontWeight="bolder" fontSize="2rem">
+			<Typography
+				className="home--line"
+				variant="h2"
+				fontWeight="bolder"
+				fontSize="2rem"
+			>
 				{t('introductionThirdLine')}
 			</Typography>
 		</>

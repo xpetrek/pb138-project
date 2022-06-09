@@ -1,0 +1,17 @@
+.home--title {
+    text-align: center;
+}
+
+.home--line {
+    padding-bottom: 1.5rem;
+}
+
+.login--box, .signup--box {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.login--button, .signup--button {
+    height: 3.3rem;
+}

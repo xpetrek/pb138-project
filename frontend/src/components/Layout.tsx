@@ -13,6 +13,7 @@ import {
 import { useTranslation } from '../hooks/useTranslation';
 import LanguageSwitch from '../components/LanguageSwitch';
 import useLoggedInUser from '../hooks/useLoggedInUser';
+import '../styles.css';
 
 type Props = {
 	children?: React.ReactNode;
