@@ -12,9 +12,9 @@ const SignUp = () => {
 	usePageTitle('Login');
 	const navigate = useNavigate();
 
-	const [name, nameProps] = useField('name', true);
-	const [email, emailProps] = useField('name', true);
-	const [password, passwordProps] = useField('name', true);
+	const [name, nameProps] = useField('name', true, 'name');
+	const [email, emailProps] = useField('email', true, 'email');
+	const [password, passwordProps] = useField('password', true, 'password');
 	const { signUp } = useLoggedInUser();
 
 	const handleSignUp = () => {
