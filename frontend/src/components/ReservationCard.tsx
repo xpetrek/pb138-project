@@ -31,22 +31,22 @@ const ReservationCard = ({ reservation, index, handleDelete }: Props) => {
 			onMouseOver={() => setFocused(true)}
 			onMouseLeave={() => setFocused(false)}
 		>
-			<Box
-				display="flex"
-				sx={{
-					visibility: focused ? 'visible' : 'hidden',
-					justifyContent: 'end'
-				}}
-			>
-				<Button
-					color="primary"
-					variant="contained"
-					onClick={() => handleDelete(reservation.id, index)}
-				>
-					Delete
-				</Button>
-			</Box>
 			<CardActionArea onClick={() => navigate(`/rooms/${reservation.roomId}`)}>
+				<Box
+					display="flex"
+					sx={{
+						visibility: focused ? 'visible' : 'hidden',
+						justifyContent: 'end'
+					}}
+				>
+					<Button
+						color="primary"
+						variant="contained"
+						onClick={() => handleDelete(reservation.id, index)}
+					>
+						Delete
+					</Button>
+				</Box>
 				<CardMedia
 					component="img"
 					image={
@@ -54,7 +54,6 @@ const ReservationCard = ({ reservation, index, handleDelete }: Props) => {
 							? reservation.room.pictures[0].url
 							: '/room.png'
 					}
-					sx={{ maxHeight: '50%', maxWidth: '50%' }}
 				/>
 				<CardContent>
 					<Typography gutterBottom variant="h4" component="div">

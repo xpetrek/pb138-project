@@ -22,15 +22,12 @@ const useField = (id: string, required?: boolean, validateOn?: string) => {
 	const isPasswordValid = () => {
 		setErrMessage('');
 		if (value.length < 8) setErrMessage(t('passwordShort'));
-		else if (value.length > 16) setErrMessage(t('passwordLong'));
 	};
 
 	const isNameValid = () => {
-		const pattern = new RegExp('^[A-Za-z]+$');
-		setErrMessage('');
-		if (!pattern.test(value)) setErrMessage(t('invalidName'));
-		else if (value.length < 3) setErrMessage(t('nameShort'));
-		else if (value.length > 15) setErrMessage(t('nameLong'));
+		if (value.length >= 3 || value.length <= 20) setErrMessage('');
+		if (value.length < 3) setErrMessage(t('nameShort'));
+		else if (value.length > 20) setErrMessage(t('nameLong'));
 	};
 
 	const validation = () => {

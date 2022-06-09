@@ -46,6 +46,6 @@ export default {
 	passwordLong: 'Heslo je príliš krátke! (Viac ako 16 znakov)',
 	invalidName: 'Neplatné meno!',
 	nameShort: 'Meno je príliš krátke! (Menej ako 3 znaky)',
-	nameLong: 'Meno je príliš dlhé! (Viac ako 15 znakov)',
+	nameLong: 'Meno je príliš dlhé! (Viac ako 20 znakov)',
 	title: 'Airbnb izby'
 };

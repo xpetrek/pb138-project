@@ -45,13 +45,16 @@ const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 					</Button>
 				) : null}
 			</Box>
-			<CardActionArea onClick={() => navigate(`/rooms/${room.id}`)}>
+			<CardActionArea
+				className="room-card--area"
+				onClick={() => navigate(`/rooms/${room.id}`)}
+			>
 				<CardMedia
+					className="room-card--picture"
 					component="img"
 					image={
 						room.pictures.length !== 0 ? room.pictures[0].url : '/room.png'
 					}
-					sx={{ maxHeight: '50%', maxWidth: '50%' }}
 				/>
 				<CardContent>
 					<Typography gutterBottom variant="h4" component="div">
