@@ -78,7 +78,7 @@ const DatePicker = ({
 						)
 					}
 				>
-					{t('submit')}
+					{t('makeReservation')}
 				</Button>
 			</Grid>
 		</Grid>

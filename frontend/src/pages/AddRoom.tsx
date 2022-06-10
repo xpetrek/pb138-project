@@ -1,4 +1,5 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import useField from '../hooks/useField';
 import usePageTitle from '../hooks/usePageTitle';
@@ -9,6 +10,7 @@ import useLoggedInUser from '../hooks/useLoggedInUser';
 const AddRoom = () => {
 	usePageTitle('Add room');
 	const t = useTranslation();
+	const navigate = useNavigate();
 	const { session } = useLoggedInUser();
 
 	const [name, nameProps] = useField('name', true);
@@ -20,15 +22,21 @@ const AddRoom = () => {
 
 	const handleAddRoom = () => {
 		if (!session) return;
-		roomService.create(
-			name,
-			description,
-			location,
-			Number.parseInt(ppd),
-			imageURL,
-			imageLabel,
-			session
-		);
+		roomService
+			.create(
+				name,
+				description,
+				location,
+				Number.parseInt(ppd),
+				imageURL,
+				imageLabel,
+				session
+			)
+			.then(response => {
+				if (response?.ok) {
+					response.json().then(res => navigate(`/rooms/${res.roomId}`));
+				}
+			});
 	};
 
 	const LOCATIONS = [' ', t('brno'), t('prague')];
