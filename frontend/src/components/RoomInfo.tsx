@@ -10,8 +10,11 @@ const RoomInfo = (room: RoomData) => {
 		<>
 			<Box
 				sx={{
-					width: '45rem',
-					objectFit: 'scale-down'
+					width: '50%',
+					display: 'block',
+					marginLeft: 'auto',
+					minWidth: '30remm',
+					marginRight: 'auto'
 				}}
 				component="img"
 				alt="Bad photo"

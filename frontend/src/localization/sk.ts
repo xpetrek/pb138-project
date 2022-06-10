@@ -49,5 +49,8 @@ export default {
 	nameLong: 'Meno je príliš dlhé! (Viac ako 20 znakov)',
 	title: 'Airbnb izby',
 	loginFailed: 'Prihlásenie zlyhalo!',
-	signUpFailed: 'Registrácia zlyhala!'
+	signUpFailed: 'Registrácia zlyhala!',
+	makeReservation: 'Vytvor rezerváciu!',
+	operationSuccess: 'Operácia úspešná!',
+	operationFailure: 'Operácia neúspešná!'
 };

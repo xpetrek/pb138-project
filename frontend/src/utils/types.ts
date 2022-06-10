@@ -32,6 +32,8 @@ export type SessionData = {
 	token?: string;
 };
 
+export type AlertTypes = 'error' | 'warning' | 'info' | 'success';
+
 export type Location = '' | 'Brno' | 'Praha';
 
 export type Order =

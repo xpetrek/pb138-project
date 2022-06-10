@@ -28,7 +28,7 @@ const RoomCard = ({ room, index, canDelete, handleDelete }: Props) => {
 		<Card
 			onMouseOver={() => setFocused(true)}
 			onMouseLeave={() => setFocused(false)}
-			sx={{ display: 'grid', width: '100%', objectFit: 'scale-down' }}
+			sx={{ display: 'grid', width: '100%', objectFit: 'contain' }}
 		>
 			<Box
 				display="flex"

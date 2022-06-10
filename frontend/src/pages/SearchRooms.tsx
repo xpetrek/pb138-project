@@ -8,7 +8,7 @@ import useField from '../hooks/useField';
 import { useTranslation } from '../hooks/useTranslation';
 import usePageTitle from '../hooks/usePageTitle';
 import roomService from '../hooks/roomService';
-import { Order, RoomData } from '../utils/types';
+import { RoomData } from '../utils/types';
 
 const SearchRooms = () => {
 	const t = useTranslation();
@@ -16,7 +16,7 @@ const SearchRooms = () => {
 
 	const [location, locationProps] = useField('');
 	const [rooms, setRooms] = useState<RoomData[]>([]);
-	const [orderBy, setOrderBy] = useState<Order>('price_asc');
+	const [_orderBy, orderByProps] = useField('price_asc');
 
 	useEffect(() => {
 		roomService
@@ -30,29 +30,19 @@ const SearchRooms = () => {
 			.then(response => response.json().then(res => setRooms(res)));
 	}, [location]);
 
-	const changeOrder = (order: string) => {
+	const changeOrder = (key: number) => {
 		const copy = rooms;
 		copy?.sort((a: RoomData, b: RoomData) => {
-			if (orderBy === 'location_asc')
-				return a.location.toLowerCase > b.location.toLowerCase ? 1 : -1;
-			if (orderBy === 'location_desc')
-				return a.location.toLowerCase < b.location.toLowerCase ? 1 : -1;
-			if (orderBy === 'price_desc') return b.pricePerDay - a.pricePerDay;
-			if (order === 'price_asc') return a.pricePerDay - b.pricePerDay;
+			if (key === 0) return a.pricePerDay - b.pricePerDay;
+			if (key === 1) return b.pricePerDay - a.pricePerDay;
 			return 0;
 		});
 		setRooms(copy);
-		setOrderBy(order as Order);
 	};
-	// const locations = [' ', t('brno'), t('prague')];
+
 	const LOCATIONS = [' ', t('brno'), t('prague')];
 
-	const ORDER_BY = [
-		t('locationAsc'),
-		t('locationDesc'),
-		t('priceAsc'),
-		t('priceDesc')
-	];
+	const ORDER_BY = [t('priceAsc'), t('priceDesc')];
 	return (
 		<>
 			<Box className="search--filters">
@@ -72,12 +62,12 @@ const SearchRooms = () => {
 				<TextField
 					className="search--orderBy-field"
 					label={t('orderBy')}
-					value={orderBy}
+					{...orderByProps}
 					select
 					type="text"
 				>
 					{ORDER_BY.map((order: string, i: number) => (
-						<MenuItem key={i} value={order} onClick={() => changeOrder(order)}>
+						<MenuItem key={i} value={order} onClick={() => changeOrder(i)}>
 							{order}
 						</MenuItem>
 					))}

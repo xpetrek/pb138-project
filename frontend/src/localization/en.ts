@@ -50,5 +50,8 @@ export default {
 	nameLong: 'Name too long! (Over 15 characters)',
 	title: 'Airbnb rooms',
 	loginFailed: 'Login failed!',
-	signUpFailed: 'Sign up failed!'
+	signUpFailed: 'Sign up failed!',
+	makeReservation: 'Create reservation!',
+	operationSuccess: 'Operation successful!',
+	operationFailure: 'Opertion failure!'
 };
