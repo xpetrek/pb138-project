@@ -36,15 +36,21 @@ const AddRoom = () => {
 	return (
 		<>
 			<Box>
-				<div>
-					<TextField label={t('name')} {...nameProps} type="email" />
+				<div className="add-room--first-box">
 					<TextField
+						className="add-room--name"
+						label={t('name')}
+						{...nameProps}
+						type="email"
+					/>
+					<TextField
+						className="add-room--description"
 						label={t('description')}
 						{...descriptionProps}
 						type="text"
 					/>
 					<TextField
-						className="add-room--locaiton"
+						className="add-room--location"
 						label={t('location')}
 						{...locationProps}
 						select
@@ -56,12 +62,26 @@ const AddRoom = () => {
 							</MenuItem>
 						))}
 					</TextField>
-					<TextField label={t('ppd')} {...ppdProps} type="number" />
+					<TextField
+						className="add-room--ppd"
+						label={t('ppd')}
+						{...ppdProps}
+						type="number"
+					/>
 				</div>
 
-				<div>
-					<TextField label={t('imageUrl')} {...imageURLProps} type="text" />
-					<TextField label={t('imageLabel')} {...imageLabelProps} />
+				<div className="add-room--second-box">
+					<TextField
+						className="add-room--image-url"
+						label={t('imageUrl')}
+						{...imageURLProps}
+						type="text"
+					/>
+					<TextField
+						className="add-room--image-label"
+						label={t('imageLabel')}
+						{...imageLabelProps}
+					/>
 				</div>
 				{imageURL ? (
 					<Box

@@ -5,11 +5,9 @@ import { RoomData } from '../utils/types';
 import usePageTitle from '../hooks/usePageTitle';
 import roomService from '../hooks/roomService';
 import RoomReservation from '../components/RoomReservation';
-import useLoggedInUser from '../hooks/useLoggedInUser';
 
 const ShowRoom = () => {
 	usePageTitle('Room');
-	const { session } = useLoggedInUser();
 
 	const { id } = useParams();
 	const [room, setRoom] = useState<RoomData>({
@@ -32,14 +30,7 @@ const ShowRoom = () => {
 		console.log(room);
 	}, []);
 
-	return loading ? (
-		<>Loading!</>
-	) : (
-		<RoomReservation
-			room={room}
-			hasOwnership={session?.user.id === room.ownerId}
-		/>
-	);
+	return loading ? <>Loading!</> : <RoomReservation room={room} />;
 };
 
 export default ShowRoom;

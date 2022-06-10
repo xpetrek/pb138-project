@@ -14,7 +14,7 @@ import ProtectedRoute from './ProtectedRouter';
 
 const CustomRouter = () => (
 	<Routes>
-		<Route path="/" element={<Home language="en" />} />
+		<Route path="/" element={<Home />} />
 		<Route path="/login" element={<Login />} />
 		<Route path="/signUp" element={<SignUp />} />
 		<Route

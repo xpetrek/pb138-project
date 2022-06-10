@@ -11,9 +11,8 @@ import RoomInfo from './RoomInfo';
 
 type Props = {
 	room: RoomData;
-	hasOwnership?: boolean;
 };
-const RoomReservation = ({ room, hasOwnership = true }: Props) => {
+const RoomReservation = ({ room }: Props) => {
 	const { session } = useLoggedInUser();
 
 	const [nonUserReservationDates, setNonUserReservationDates] = useState<

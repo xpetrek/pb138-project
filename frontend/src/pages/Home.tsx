@@ -1,11 +1,8 @@
 import { Typography } from '@mui/material';
 
 import { useTranslation } from '../hooks/useTranslation';
-type Props = {
-	language: string;
-};
 
-const Home = ({ language }: Props) => {
+const Home = () => {
 	const t = useTranslation();
 	return (
 		<>

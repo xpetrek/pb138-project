@@ -8,7 +8,15 @@
 	object-fit: scale-down;
 }
 
-.add-room--locaiton {
+.add-room--first-box, .add-room--second-box {
+	display: flex;
+	gap: 1rem;
+	padding-bottom: 1rem;
+}
+
+.add-room--name, .add-room--location,
+.add-room--ppd, .add-room--image-url,
+.add-room--image-label {
 	width: 20%;
 }
 

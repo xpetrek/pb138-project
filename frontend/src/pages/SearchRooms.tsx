@@ -1,6 +1,6 @@
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { Box, TextField, Button, MenuItem } from '@mui/material';
+import { Box, TextField, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import RoomCardSearchResult from '../components/RoomCardSearchResult';

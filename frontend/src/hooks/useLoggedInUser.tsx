@@ -1,11 +1,4 @@
-import {
-	createContext,
-	FC,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from 'react';
+import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 import { BACKEND_URL } from '../utils/constants';
 import { SessionData } from '../utils/types';

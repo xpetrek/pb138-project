@@ -1,18 +1,8 @@
-import {
-	Card,
-	CardActionArea,
-	CardContent,
-	CardMedia,
-	Typography
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Card, CardActionArea, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
-import { useTranslation } from '../hooks/useTranslation';
 
 const AddCard = () => {
 	const navigate = useNavigate();
-	const t = useTranslation();
 
 	return (
 		<Card sx={{ display: 'grid', width: '100%' }}>
